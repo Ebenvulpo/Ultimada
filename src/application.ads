@@ -1,11 +1,8 @@
 with Ada.Finalization;
-with Game;                 use Game;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
-with Video;                use Video;
+with Game;             use Game;
+with Video;            use Video;
 
 package Application is
-   package C renames Interfaces.C;
-
    type App_Type is new Ada.Finalization.Controlled with private;
 
    procedure Init (App : in out App_Type);
@@ -16,7 +13,6 @@ private
       record
 	 Video   : Video_Driver;
 	 Game    : Game_Type;
-	 AppPath : C.Strings.chars_ptr := C.Strings.Null_Ptr;
       end record;
 
    overriding procedure Finalize (App : in out App_Type);

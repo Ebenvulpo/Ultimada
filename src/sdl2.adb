@@ -8,7 +8,7 @@ package body SDL2 is
 
       File_Address :         System.Address;
       Surface      :         SDL_Surface;
-      FilePath     : aliased C.char_array := C.To_C (File) & C.nul;
+      FilePath     : aliased C.char_array := C.To_C (File);
    begin
       File_Address := SDL_RWFromFile (FilePath'Address, "rb");
       if File_Address = System.Null_Address then

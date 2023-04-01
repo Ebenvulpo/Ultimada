@@ -1,3 +1,7 @@
+with Ada.Text_IO;
+with Filepath;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
+
 package body Video is
    package C renames Interfaces.C;
 
@@ -72,6 +76,12 @@ package body Video is
 
    procedure Finalize (Video : in out Video_Driver) is
    begin
+      for I in Video.Textures'Range loop
+	 if Video.Textures (I) /= null then
+	    SDL_DestroyTexture (Video.Textures (I));
+	 end if;
+      end loop;
+
       if Video.Renderer /= null then
 	 SDL_DestroyRenderer (Video.Renderer);
       end if;
@@ -84,8 +94,13 @@ package body Video is
    procedure Load_Textures (Video : in out Video_Driver) is
       Surface : SDL_Surface;
    begin
-      Surface := SDL_LoadBMP ("test.bmp");
-      Video.Textures (0) := SDL_CreateTextureFromSurface (Video.Renderer, Surface);
-      SDL_FreeSurface (Surface);
+      for I in Bitmap_Array'Range loop
+	 Ada.Text_IO.Put      ("Loading: ");
+	 Ada.Text_IO.Put_Line (SB.To_String (Bitmap_Array (I)));
+
+	 Surface := SDL_LoadBMP (Value (Filepath.Get) & "assets\" & "bmps\" & SB.To_String (Bitmap_Array (I)));
+	 Video.Textures (I) := SDL_CreateTextureFromSurface (Video.Renderer, Surface);
+	 SDL_FreeSurface (Surface);
+      end loop;
    end Load_Textures;
 end Video;

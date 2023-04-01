@@ -7,6 +7,8 @@ package body Player is
    is
    begin
       Player.Name (Name'First .. Name'Last) := Name;
+      Player.X := X;
+      Player.Y := Y;
    end Create;
 
    function Get_Name (Player : in out Player_Type) return String is

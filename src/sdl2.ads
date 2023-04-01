@@ -94,6 +94,9 @@ package SDL2 is
      return SDL_Texture with
      Import => True, Convention => C, External_Name => "SDL_CreateTextureFromSurface";
 
+   procedure SDL_DestroyTexture (Texture : in SDL_Texture) with
+     Import => True, Convention => C, External_Name => "SDL_DestroyTexture";
+
    procedure SDL_FreeSurface (Surface : in SDL_Surface) with
      Import => True, Convention => C, External_Name => "SDL_FreeSurface";
 

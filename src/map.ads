@@ -10,7 +10,7 @@ package Map is
 
    subtype Map_Width  is C.int range 0 .. 255;
    subtype Map_Height is C.int range 0 .. 255;
-   
+
    procedure Create (Map : in out Map_Type);
    procedure Render (Map : in out Map_Type; Video : in out Video_Driver);
 
