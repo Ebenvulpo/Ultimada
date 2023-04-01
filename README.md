@@ -12,4 +12,6 @@ gprbuild Ultimada.gpr
 ```
 
 ## Run
+```
 ./bin/ultimada
+```
