@@ -1,5 +1,4 @@
 with Ada.Finalization;
-with SDL2;             use SDL2;
 with Video;            use Video;
 
 package Application is

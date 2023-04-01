@@ -4,10 +4,20 @@ with System;       use System;
 package SDL2 is
    package C renames Interfaces.C;
 
-   type SDL_Window   is new System.Address;
-   type SDL_Renderer is new System.Address;
-   type SDL_Surface  is new System.Address;
-   type SDL_Texture  is new System.Address;
+   type Dummy_SDL_Window   is limited private;
+   type Dummy_SDL_Renderer is limited private;
+   type Dummy_SDL_Surface  is limited private;
+   type Dummy_SDL_Texture  is limited private;
+
+   type SDL_Window   is access Dummy_SDL_Window;
+   type SDL_Renderer is access Dummy_SDL_Renderer;
+   type SDL_Surface  is access Dummy_SDL_Surface;
+   type SDL_Texture  is access Dummy_SDL_Texture;
+
+   pragma Convention (C, SDL_Window);
+   pragma Convention (C, SDL_Renderer);
+   pragma Convention (C, SDL_Surface);
+   pragma Convention (C, SDL_Texture);
 
    type Event_Padding is array (C.size_t range <>) of aliased C.unsigned_char;
    pragma Convention (C, Event_Padding);
@@ -67,6 +77,11 @@ package SDL2 is
    procedure SDL_RenderClear (Renderer : in SDL_Renderer) with
      Import => True, Convention => C, External_Name => "SDL_RenderClear";
 
+   function SDL_RenderFillRect
+     (Renderer : in SDL_Renderer; Rect : access SDL_Rect)
+     return C.int with
+     Import => True, Convention => C, External_Name => "SDL_RenderFillRect";
+
    procedure SDL_RenderPresent (Renderer : in SDL_Renderer) with
      Import => True, Convention => C, External_Name => "SDL_RenderPresent";
 
@@ -79,4 +94,10 @@ package SDL2 is
      Import => True, Convention => C, External_Name => "SDL_FreeSurface";
 
    function SDL_LoadBMP (File : in String) return SDL_Surface;
+
+private
+   type Dummy_SDL_Window   is null record;
+   type Dummy_SDL_Renderer is null record;
+   type Dummy_SDL_Surface  is null record;
+   type Dummy_SDL_Texture  is null record;
 end SDL2;

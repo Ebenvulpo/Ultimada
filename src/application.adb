@@ -1,3 +1,5 @@
+with SDL2; use SDL2;
+
 package body Application is
    procedure Init (App : in out App_Type) is
    begin
@@ -5,7 +7,7 @@ package body Application is
    end Init;
 
    procedure Game_Loop (App : in out App_Type) is
-      Event      : aliased SDL_Event;
+      Event : aliased SDL_Event;
    begin
       loop
 	 SDL_WaitEvent (Event'Access);
@@ -23,6 +25,7 @@ package body Application is
    procedure Render (App : in out App_Type) is
    begin
       Start (App.Video);
+      App.Video.Draw_Rectangle (64, 64, 0, 0, 16#FF#, 16#FF#, 16#FF#);
       Finish (App.Video);
    end Render;
 end Application;

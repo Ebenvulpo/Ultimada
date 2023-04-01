@@ -1,5 +1,3 @@
-with Interfaces.C; use Interfaces.C;
-
 package body Video is
    package C renames Interfaces.C;
 
@@ -19,6 +17,31 @@ package body Video is
       SDL_RenderPresent (Video.Renderer);
    end Finish;
 
+   procedure Draw_Rectangle
+     (Video   : in out Video_Driver;
+      W, H    : in     C.int;
+      X, Y    : in     C.int;
+      R, G, B : in     C.unsigned_char)
+   is
+      Error :         C.int;
+      Rect  : aliased SDL_Rect;
+   begin
+      Rect.W := W;
+      Rect.H := H;
+      Rect.X := X;
+      Rect.Y := Y;
+
+      Error := SDL_SetRenderDrawColor (Video.Renderer, R, G, B, 16#FF#);
+      if Error < 0 then
+	 raise Program_Error;
+      end if;
+
+      Error := SDL_RenderFillRect (Video.Renderer, Rect'Access);
+      if Error < 0 then
+	 raise Program_Error;
+      end if;
+   end Draw_Rectangle;
+
    procedure Init (Video : in out Video_Driver) is
       Name : aliased C.char_array := "Ultimada" & C.nul;
    begin
@@ -28,11 +51,11 @@ package body Video is
 
    procedure Finalize (Object : in out Video_Driver) is
    begin
-      if Object.Renderer /= SDL_Renderer (System.Null_Address) then
+      if Object.Renderer /= null then
 	 SDL_DestroyRenderer (Object.Renderer);
       end if;
 
-      if Object.Window /= SDL_Window (System.Null_Address) then
+      if Object.Window /= null then
 	 SDL_DestroyWindow (Object.Window);
       end if;
    end Finalize;
