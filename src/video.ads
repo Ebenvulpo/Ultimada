@@ -31,7 +31,7 @@ private
 	 Textures : Texture_Array (0 .. 64) := (others => null);
       end record;
 
-   overriding procedure Finalize (Object : in out Video_Driver);
+   overriding procedure Finalize (Video : in out Video_Driver);
 
    procedure Load_Textures (Video : in out Video_Driver);
 end Video;

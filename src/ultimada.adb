@@ -4,6 +4,8 @@ with Interfaces.C; use Interfaces.C;
 with SDL2;         use SDL2;
 
 procedure Ultimada is
+   package C renames Interfaces.C;
+
    App   : App_Type;
    Error : C.int;
 begin

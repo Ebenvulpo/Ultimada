@@ -1,5 +1,6 @@
-with Interfaces.C; use Interfaces.C;
-with System;       use System;
+with Interfaces.C;         use Interfaces.C;
+with Interfaces.C.Strings;
+with System;               use System;
 
 package SDL2 is
    package C renames Interfaces.C;
@@ -35,6 +36,9 @@ package SDL2 is
 	 W, H : aliased C.int;
       end record;
    pragma Convention (C, SDL_Rect);
+
+   function SDL_GetBasePath return C.Strings.chars_ptr with
+     Import => True, Convention => C, External_Name => "SDL_GetBasePath";
 
    procedure SDL_WaitEvent (Event : access SDL_Event) with
      Import => True, Convention => C, External_Name => "SDL_WaitEvent";

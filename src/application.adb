@@ -4,6 +4,7 @@ package body Application is
    procedure Init (App : in out App_Type) is
    begin
       Init (App.Video);
+      App.AppPath := SDL_GetBasePath;
    end Init;
 
    procedure Game_Loop (App : in out App_Type) is
@@ -29,4 +30,9 @@ package body Application is
       App.Video.Draw_Texture (128, 128, 0);
       Finish (App.Video);
    end Render;
+
+   procedure Finalize (App : in out App_Type) is
+   begin
+      Free (App.AppPath);
+   end Finalize;
 end Application;

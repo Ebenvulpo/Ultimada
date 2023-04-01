@@ -70,14 +70,14 @@ package body Video is
       Video.Load_Textures;
    end Init;
 
-   procedure Finalize (Object : in out Video_Driver) is
+   procedure Finalize (Video : in out Video_Driver) is
    begin
-      if Object.Renderer /= null then
-	 SDL_DestroyRenderer (Object.Renderer);
+      if Video.Renderer /= null then
+	 SDL_DestroyRenderer (Video.Renderer);
       end if;
 
-      if Object.Window /= null then
-	 SDL_DestroyWindow (Object.Window);
+      if Video.Window /= null then
+	 SDL_DestroyWindow (Video.Window);
       end if;
    end Finalize;
 
