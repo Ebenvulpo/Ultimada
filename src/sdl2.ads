@@ -1,4 +1,4 @@
-with Interfaces.C;
+with Interfaces.C; use Interfaces.C;
 with System;       use System;
 
 package SDL2 is
@@ -14,7 +14,7 @@ package SDL2 is
 
    type SDL_Event is
       record
-	Event_Type : C.int;
+	Event_Type : C.unsigned;
 	Padding    : Event_Padding (1 .. 52);
       end record;
    pragma Convention (C, SDL_Event);
@@ -26,7 +26,7 @@ package SDL2 is
       end record;
    pragma Convention (C, SDL_Rect);
 
-   function SDL_WaitEvent (Event : access SDL_Event) return C.int with
+   procedure SDL_WaitEvent (Event : access SDL_Event) with
      Import => True, Convention => C, External_Name => "SDL_WaitEvent";
 
    function SDL_Init (Flags : in C.unsigned) return C.int with
@@ -36,7 +36,7 @@ package SDL2 is
      Import => True, Convention => C, External_Name => "SDL_Quit";
 
    function SDL_CreateWindow
-     (Title : in C.char_array; X, Y, W, H : C.int; Flags : in C.unsigned)
+     (Title : in System.Address; X, Y, W, H : C.int; Flags : in C.unsigned)
      return SDL_Window with
      Import => True, Convention => C, External_Name => "SDL_CreateWindow";
 
@@ -75,8 +75,8 @@ package SDL2 is
      return SDL_Texture with
      Import => True, Convention => C, External_Name => "SDL_CreateTextureFromSurface";
 
-   procedure SDL_FreeSurface (Surface : in SDL_Surface)
-     with Import => True, Convention => C, External_Name => "SDL_FreeSurface";
+   procedure SDL_FreeSurface (Surface : in SDL_Surface) with
+     Import => True, Convention => C, External_Name => "SDL_FreeSurface";
 
-   function SDL_LoadBMP (File : in C.char_array) return SDL_Surface;
+   function SDL_LoadBMP (File : in String) return SDL_Surface;
 end SDL2;
