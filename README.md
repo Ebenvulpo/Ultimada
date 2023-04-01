@@ -5,6 +5,7 @@ Ultima clone in Ada / SDL2
 
 ```
 git clone ...
+cd Ultimada
 mkdir bin
 mkdir obj
 gprbuild Ultimada.gpr
