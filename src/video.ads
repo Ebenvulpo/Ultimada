@@ -14,6 +14,11 @@ package Video is
       X, Y    : in     C.int;
       R, G, B : in     C.unsigned_char);
 
+   procedure Draw_Texture
+     (Video  : in out Video_Driver;
+      X, Y   : in     C.int;
+      Number : in     Natural);
+
    procedure Init (Video : in out Video_Driver);
 
 private
@@ -27,4 +32,6 @@ private
       end record;
 
    overriding procedure Finalize (Object : in out Video_Driver);
+
+   procedure Load_Textures (Video : in out Video_Driver);
 end Video;

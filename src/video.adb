@@ -42,11 +42,32 @@ package body Video is
       end if;
    end Draw_Rectangle;
 
+   procedure Draw_Texture
+     (Video  : in out Video_Driver;
+      X, Y   : in     C.int;
+      Number : in     Natural)
+   is
+      Rect  : aliased SDL_Rect;
+      Error :         C.int;
+   begin
+      Rect.X := X;
+      Rect.Y := Y;
+      Rect.W := 16;
+      Rect.H := 16;
+
+      Error := SDL_RenderCopy (Video.Renderer, Video.Textures (Number), null, Rect'Access);
+      if Error < 0 then
+	 raise Program_Error;
+      end if;
+   end Draw_Texture;
+
    procedure Init (Video : in out Video_Driver) is
       Name : aliased C.char_array := "Ultimada" & C.nul;
    begin
       Video.Window := SDL_CreateWindow (Name'Address, 200, 200, 640, 480, 0);
       Video.Renderer := SDL_CreateRenderer (Video.Window, -1, 0);
+
+      Video.Load_Textures;
    end Init;
 
    procedure Finalize (Object : in out Video_Driver) is
@@ -59,4 +80,12 @@ package body Video is
 	 SDL_DestroyWindow (Object.Window);
       end if;
    end Finalize;
+
+   procedure Load_Textures (Video : in out Video_Driver) is
+      Surface : SDL_Surface;
+   begin
+      Surface := SDL_LoadBMP ("test.bmp");
+      Video.Textures (0) := SDL_CreateTextureFromSurface (Video.Renderer, Surface);
+      SDL_FreeSurface (Surface);
+   end Load_Textures;
 end Video;

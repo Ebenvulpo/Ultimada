@@ -26,6 +26,7 @@ package body Application is
    begin
       Start (App.Video);
       App.Video.Draw_Rectangle (64, 64, 0, 0, 16#FF#, 16#FF#, 16#FF#);
+      App.Video.Draw_Texture (128, 128, 0);
       Finish (App.Video);
    end Render;
 end Application;
