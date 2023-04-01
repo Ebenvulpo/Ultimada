@@ -1,4 +1,4 @@
-with Interfaces.C; use Interfaces.C;
+with Interfaces.C;
 with System;       use System;
 
 package SDL2 is
@@ -6,6 +6,8 @@ package SDL2 is
 
    type SDL_Window   is new System.Address;
    type SDL_Renderer is new System.Address;
+   type SDL_Surface  is new System.Address;
+   type SDL_Texture  is new System.Address;
 
    type Event_Padding is array (C.size_t range <>) of aliased C.unsigned_char;
    pragma Convention (C, Event_Padding);
@@ -16,6 +18,13 @@ package SDL2 is
 	Padding    : Event_Padding (1 .. 52);
       end record;
    pragma Convention (C, SDL_Event);
+
+   type SDL_Rect is
+      record
+	 X, Y : aliased C.int;
+	 W, H : aliased C.int;
+      end record;
+   pragma Convention (C, SDL_Rect);
 
    function SDL_WaitEvent (Event : access SDL_Event) return C.int with
      Import => True, Convention => C, External_Name => "SDL_WaitEvent";
@@ -47,6 +56,27 @@ package SDL2 is
      return C.int with
      Import => True, Convention => C, External_Name => "SDL_SetRenderDrawColor";
 
+   function SDL_RenderCopy
+     (Renderer : in     SDL_Renderer;
+      Texture  : in     SDL_Texture;
+      SrcRect  : access SDL_Rect;
+      DstRect  : access SDL_Rect)
+     return C.int with
+     Import => True, Convention => C, External_Name => "SDL_RenderCopy";
+
    procedure SDL_RenderClear (Renderer : in SDL_Renderer) with
      Import => True, Convention => C, External_Name => "SDL_RenderClear";
+
+   procedure SDL_RenderPresent (Renderer : in SDL_Renderer) with
+     Import => True, Convention => C, External_Name => "SDL_RenderPresent";
+
+   function SDL_CreateTextureFromSurface
+     (Renderer : in SDL_Renderer; Surface : in SDL_Surface)
+     return SDL_Texture with
+     Import => True, Convention => C, External_Name => "SDL_CreateTextureFromSurface";
+
+   procedure SDL_FreeSurface (Surface : in SDL_Surface)
+     with Import => True, Convention => C, External_Name => "SDL_FreeSurface";
+
+   function SDL_LoadBMP (File : in C.char_array) return SDL_Surface;
 end SDL2;
