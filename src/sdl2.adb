@@ -22,6 +22,23 @@ package body SDL2 is
 
       return Surface;
    end SDL_LoadBMP;
+   
+   function Mix_PlayChannel
+     (Channel : in C.int;
+      Chunk   : in Mix_Chunk;
+      Loops   : in C.int)
+     return C.int
+   is
+      function Mix_PlayChannelTimed
+	(Channel : in C.int;
+	 Chunk   : in Mix_Chunk;
+	 Loops   : in C.int;
+	 Ticks   : in C.int)
+	return C.int with
+	Import => True, Convention => C, External_Name => "Mix_PlayChannelTimed";
+   begin
+      return Mix_PlayChannelTimed (Channel, Chunk, Loops, -1);
+   end Mix_PlayChannel;
 
    function Mix_LoadWAV (File : in String) return Mix_Chunk is
       function Mix_LoadWAV_RW (File : in System.Address; FreeSrc : in C.int) return Mix_Chunk with

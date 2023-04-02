@@ -162,8 +162,7 @@ package SDL2 is
      (Channel : in C.int;
       Chunk   : in Mix_Chunk;
       Loops   : in C.int)
-     return C.int with
-     Import => True, Convention => C, External_Name => "Mix_PlayChannel";
+     return C.int;
 
    procedure Mix_FreeChunk (Chunk : in Mix_Chunk) with
      Import => True, Convention => C, External_Name => "Mix_FreeChunk";
