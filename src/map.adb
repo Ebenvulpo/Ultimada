@@ -23,11 +23,6 @@ package body Map is
 
             R := default_tile;
             if F < spawn_rate then
-               --  Ada.Text_IO.Put_Line(low_tile'Image & " "
-               --     & high_tile'Image & " "
-               --     & F'Image & " "
-               --     & R'Image & " "
-               --     );
                R := randomN(low_tile, high_tile);
             end if;
 
