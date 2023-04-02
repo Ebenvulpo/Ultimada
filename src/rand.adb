@@ -13,6 +13,11 @@ package body Rand is
       return random(gen);
    end randomN;
 
+   function noise2D(low: in Integer; high: in Integer) return Integer is
+   begin
+      return 1;
+   end noise2D;
+
    function randomF return Float is
       use Ada.Numerics.Float_Random;
       G : Generator;

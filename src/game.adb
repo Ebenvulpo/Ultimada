@@ -9,7 +9,7 @@ package body Game is
    procedure Start (Game : in out Game_Type) is
    begin
       Game.Human_Player.Create;
-      Game.Map.Create(2, 7, 1, 0.95);
+      Game.Map.Create(2, 7, 2, 0.95);
       Game.Objs.Create(9, 11, 0, 0.1);
    end Start;
 
