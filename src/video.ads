@@ -42,7 +42,9 @@ private
 
    type Bitmap_Array_Type is array (Natural range <>) of SB.Bounded_String;
    Bitmap_Array : constant Bitmap_Array_Type :=
-     (SB.To_Bounded_String ("chest.bmp"),            SB.To_Bounded_String ("floor_dirt.bmp"),
+     (
+      SB.To_Bounded_String ("void_pink.bmp"),
+      SB.To_Bounded_String ("chest.bmp"),            SB.To_Bounded_String ("floor_dirt.bmp"),
       SB.To_Bounded_String ("floor_grass.bmp"),      SB.To_Bounded_String ("floor_grass2.bmp"),
       SB.To_Bounded_String ("floor_grass3.bmp"),     SB.To_Bounded_String ("floor_ice.bmp"),
       SB.To_Bounded_String ("floor_lava.bmp"),       SB.To_Bounded_String ("floor_lava2.bmp"),

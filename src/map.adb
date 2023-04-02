@@ -6,11 +6,11 @@ package body Map is
    procedure Free is new Unchecked_Deallocation (Tile_Map, Tile_Map_Access);
 
    procedure Create
-        (Map          : in out Map_Type;
+     (Map          : in out Map_Type;
       low_tile     : in Integer;
       high_tile    : in Integer;
       default_tile : in Integer;
-      p            : in Float)
+      spawn_rate   : in Float)
    is
       R : Integer;
       F : Float;
@@ -20,9 +20,14 @@ package body Map is
       for Y in Map_Height_Type'Range loop
          for X in Map_Width_Type'Range loop
             F := randomF;
-            R := default_tile;
 
-            if F < p then
+            R := default_tile;
+            if F < spawn_rate then
+               --  Ada.Text_IO.Put_Line(low_tile'Image & " "
+               --     & high_tile'Image & " "
+               --     & F'Image & " "
+               --     & R'Image & " "
+               --     );
                R := randomN(low_tile, high_tile);
             end if;
 

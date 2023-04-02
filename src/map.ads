@@ -16,7 +16,7 @@ package Map is
       low_tile     : in Integer;
       high_tile    : in Integer;
       default_tile : in Integer;
-      p            : in Float);
+      spawn_rate   : in Float);
    procedure Render
      (Map      : in out Map_Type;
       Video    : in out Video_Driver;

@@ -7,7 +7,8 @@ package body Game is
    procedure Start (Game : in out Game_Type) is
    begin
       Game.Human_Player.Create;
-      Game.Map.Create(2, 3, 0, 0.9);
+      Game.Map.Create(2, 7, 1, 0.95);
+      Game.Objs.Create(9, 11, 0, 0.1);
    end Start;
 
    procedure Change_Scale (Game : out Game_Type; dS : in  C.int) is
@@ -27,7 +28,8 @@ package body Game is
       Game.Human_Player.Get_Location (Player_Location_X, Player_Location_Y);
       Video.Change_Scale(Game.Logical_Size);
       Game.Map.Render (Video, (-Player_Location_X + 2), (-Player_Location_Y + 2));
-      Video.Draw_Tile (2, 2, 13);
+      Game.Objs.Render (Video, (-Player_Location_X + 2), (-Player_Location_Y + 2));
+      Video.Draw_Tile (2, 2, 14);
    end Render;
 
    procedure Input (Game : in out Game_Type; Event : in SDL_Event) is

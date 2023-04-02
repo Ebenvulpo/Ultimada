@@ -20,9 +20,10 @@ private
    type Game_Type is new Ada.Finalization.Controlled with
       record
          Map          : Map_Type;
+         Objs         : Map_Type;
          Human_Player : Player_Type;
          Players      : Player_Array (0 .. 20);
-         Logical_Size : Interfaces.C.int := 128;
+         Logical_Size : Interfaces.C.int := 256;
       end record;
 
    overriding procedure Finalize (Game : in out Game_Type);
