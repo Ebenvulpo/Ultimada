@@ -11,12 +11,12 @@ package body Audio is
    begin
       Ada.Text_IO.Put_Line ("Staring Audio Driver");
 
-      Error := Mix_Init (0);
+      Error := Mix_Init (16#0000_0008#);
       if Error = 0 then
      	 raise Program_Error;
       end if;
 
-      Error := Mix_OpenAudio (44100, 16, 16#8010#, 1024);
+      Error := Mix_OpenAudio (44100, 16#8010#, 8, 1024);
       if Error < 0 then
 	 raise Program_Error;
       end if;
@@ -39,7 +39,6 @@ package body Audio is
       Chunk : Mix_Chunk;
    begin
       Ada.Text_IO.Put_Line ("Loading Audio Files...");
-      Ada.Text_IO.New_Line;
       for I in Wav_Files_Array'Range loop
 	 declare
 	    File : aliased constant C.char_array := C.To_C (Value (Filepath.Get) & "assets\" & "wavs\" & SB.To_String (Wav_Files_Array (I)));
@@ -51,7 +50,7 @@ package body Audio is
 	    if Chunk = null then
 	       raise Program_Error;
 	    end if;
-	 
+
 	    Audio.Waves (I) := Chunk;
 	 end;
       end loop;

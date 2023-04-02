@@ -14,7 +14,7 @@ private
 
    type Audio_Driver is new Ada.Finalization.Controlled with
       record
-	 Waves : Wav_Array_Type (1 .. 64) := (others => null);
+	 Waves : Wav_Array_Type (0 .. 64) := (others => null);
       end record;
 
    overriding procedure Finalize (Audio : in out Audio_Driver);
