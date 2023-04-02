@@ -156,8 +156,7 @@ package SDL2 is
      return C.int with
      Import => True, Convention => C, External_Name => "Mix_OpenAudio";
 
-   function Mix_LoadWAV (File : in System.Address) return Mix_Chunk with
-     Import => True, Convention => C, External_Name => "Mix_LoadWAV";
+   function Mix_LoadWAV (File : in String) return Mix_Chunk;
 
    function Mix_PlayChannel
      (Channel : in C.int;
