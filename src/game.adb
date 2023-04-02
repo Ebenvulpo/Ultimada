@@ -49,18 +49,19 @@ package body Game is
    begin
       Game.Human_Player.Get_Location (Player_Location_X, Player_Location_Y);
       case Keyboard.Keysym.Scancode is
-   when 4  => --97, a
-      Ada.Text_IO.Put_Line ("Left");
-      Game.Human_Player.Change_Location (Player_Location_X - 1, Player_Location_Y);
-   when 7  => --100, d
-      Ada.Text_IO.Put_Line ("Right");
-      Game.Human_Player.Change_Location (Player_Location_X + 1, Player_Location_Y);
-   when 22 => --115, s
-      Ada.Text_IO.Put_Line ("Down");
-      Game.Human_Player.Change_Location (Player_Location_X, Player_Location_Y + 1);
-   when 26 => --119, w
+   --  wasd, arrows (uldr)
+   when 26 | 82 => --119, w
       Ada.Text_IO.Put_Line ("Up");
       Game.Human_Player.Change_Location (Player_Location_X, Player_Location_Y - 1);
+   when 4 | 80 => --97, a
+      Ada.Text_IO.Put_Line ("Left");
+      Game.Human_Player.Change_Location (Player_Location_X - 1, Player_Location_Y);
+   when 22 | 81 => --115, s
+      Ada.Text_IO.Put_Line ("Down");
+      Game.Human_Player.Change_Location (Player_Location_X, Player_Location_Y + 1);
+   when 7 | 79 => --100, d
+      Ada.Text_IO.Put_Line ("Right");
+      Game.Human_Player.Change_Location (Player_Location_X + 1, Player_Location_Y);
    when 45 => -- "-"
       Game.Change_Scale(50);
    when 46 => -- "+"
