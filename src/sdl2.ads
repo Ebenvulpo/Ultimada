@@ -26,6 +26,9 @@ package SDL2 is
    pragma Convention (C, SDL_Renderer);
    pragma Convention (C, SDL_Surface);
    pragma Convention (C, SDL_Texture);
+   
+   type Padding_Array is array (C.size_t range <>) of aliased C.unsigned_char;
+   pragma Convention (C, Padding_Array);
 
    type SDL_Keysym is
       record
@@ -46,15 +49,15 @@ package SDL2 is
 	 Padding2   : aliased C.unsigned_char;
 	 Padding3   : aliased C.unsigned_char;
 	 Keysym     : aliased SDL_Keysym;
+	 Padding    : aliased Padding_Array (1 .. 22);
       end record;
-   for SDL_KeyboardEvent'Size use 56 * 8;
    pragma Convention (C, SDL_KeyboardEvent);
 
    type SDL_Event is
       record
-	Event_Type : C.unsigned;
+	 Event_Type : aliased C.unsigned;
+	 Padding    : aliased Padding_Array (1 .. 52);
       end record;
-   for SDL_Event'Size use 56 * 8;
    pragma Convention (C, SDL_Event);
 
    type SDL_Rect is
