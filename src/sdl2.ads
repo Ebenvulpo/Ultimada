@@ -1,6 +1,7 @@
 with Interfaces.C;         use Interfaces.C;
 with Interfaces.C.Strings;
 with System;               use System;
+with Unchecked_Conversion;
 
 package SDL2 is
    package C renames Interfaces.C;
@@ -23,6 +24,29 @@ package SDL2 is
    type Event_Padding is array (C.size_t range <>) of aliased C.unsigned_char;
    pragma Convention (C, Event_Padding);
 
+   type SDL_Keysym is
+      record
+	 Scancode     : aliased C.int;
+	 Sym          : aliased C.int;
+	 Modification : aliased C.unsigned_short;
+	 Unused       : aliased C.unsigned;
+      end record;
+   pragma Convention (C, SDL_Keysym);
+
+   type SDL_KeyboardEvent is
+      record
+	 Event_Type : aliased C.unsigned;
+	 Timestamp  : aliased C.unsigned;
+	 WindowID   : aliased C.unsigned;
+	 State      : aliased C.unsigned_char;
+	 Repeat     : aliased C.unsigned_char;
+	 Padding2   : aliased C.unsigned_char;
+	 Padding3   : aliased C.unsigned_char;
+	 Keysym     : aliased SDL_Keysym;
+	 Padding    : aliased Event_Padding (1 .. 22);
+      end record;
+   pragma Convention (C, SDL_KeyboardEvent);
+
    type SDL_Event is
       record
 	Event_Type : C.unsigned;
@@ -36,6 +60,8 @@ package SDL2 is
 	 W, H : aliased C.int;
       end record;
    pragma Convention (C, SDL_Rect);
+
+   function Get_KeyboardEvent is new Unchecked_Conversion (SDL_Event, SDL_KeyboardEvent);
 
    function SDL_GetBasePath return C.Strings.chars_ptr with
      Import => True, Convention => C, External_Name => "SDL_GetBasePath";
@@ -93,6 +119,12 @@ package SDL2 is
      (Renderer : in SDL_Renderer; Surface : in SDL_Surface)
      return SDL_Texture with
      Import => True, Convention => C, External_Name => "SDL_CreateTextureFromSurface";
+
+   procedure SDL_SetColorKey
+     (Surface : in SDL_Surface;
+      Flag    : in C.int;
+      Key     : in C.unsigned) with
+     Import => True, Convention => C, External_Name => "SDL_SetColorKey";
 
    procedure SDL_DestroyTexture (Texture : in SDL_Texture) with
      Import => True, Convention => C, External_Name => "SDL_DestroyTexture";

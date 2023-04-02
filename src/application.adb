@@ -17,6 +17,7 @@ package body Application is
 	    when others  => null;
 	 end case;
 
+	 App.Game.Input (Event);
 	 Render (App);
       end loop;
   <<Exit_Loop>>

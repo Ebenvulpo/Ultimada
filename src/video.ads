@@ -17,7 +17,7 @@ package Video is
       X, Y    : in     C.int;
       R, G, B : in     C.unsigned_char);
 
-   procedure Draw_Texture
+   procedure Draw_Tile
      (Video  : in out Video_Driver;
       X, Y   : in     C.int;
       Number : in     Natural);

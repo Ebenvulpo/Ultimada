@@ -14,11 +14,16 @@ package body Map is
       end loop;
    end Create;
 
-   procedure Render (Map : in out Map_Type; Video : in out Video_Driver) is
+   procedure Render
+     (Map      : in out Map_Type;
+      Video    : in out Video_Driver;
+      Offset_X : in     C.int;
+      Offset_Y : in     C.int)
+   is
    begin
       for Y in Map_Height_Type'Range loop
 	 for X in Map_Width_Type'Range loop
-	    Video.Draw_Texture (X * 16, Y * 16, Map.Tiles (Y)(X).Get_ID);
+	    Video.Draw_Tile ((X + Offset_X), (Y + Offset_Y), Map.Tiles (Y)(X).Get_ID);
 	 end loop;
       end loop;
    end Render;

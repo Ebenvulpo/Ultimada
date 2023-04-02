@@ -46,7 +46,7 @@ package body Video is
       end if;
    end Draw_Rectangle;
 
-   procedure Draw_Texture
+   procedure Draw_Tile
      (Video  : in out Video_Driver;
       X, Y   : in     C.int;
       Number : in     Natural)
@@ -54,8 +54,8 @@ package body Video is
       Rect  : aliased SDL_Rect;
       Error :         C.int;
    begin
-      Rect.X := X;
-      Rect.Y := Y;
+      Rect.X := X * 16;
+      Rect.Y := Y * 16;
       Rect.W := 16;
       Rect.H := 16;
 
@@ -63,7 +63,7 @@ package body Video is
       if Error < 0 then
 	 raise Program_Error;
       end if;
-   end Draw_Texture;
+   end Draw_Tile;
 
    procedure Init (Video : in out Video_Driver) is
       Name : aliased C.char_array := "Ultimada" & C.nul;
@@ -99,6 +99,7 @@ package body Video is
 	 Ada.Text_IO.Put_Line (SB.To_String (Bitmap_Array (I)));
 
 	 Surface := SDL_LoadBMP (Value (Filepath.Get) & "assets\" & "bmps\" & SB.To_String (Bitmap_Array (I)));
+	 SDL_SetColorKey (Surface, 1, 16#FF00CC#);
 	 Video.Textures (I) := SDL_CreateTextureFromSurface (Video.Renderer, Surface);
 	 SDL_FreeSurface (Surface);
       end loop;
