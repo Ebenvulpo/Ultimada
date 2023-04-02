@@ -17,7 +17,6 @@ begin
    Load_Filepath;
 
    Ada.Text_IO.Put_Line ("Hello World Ultimada!");
-
    Ada.Text_IO.Put_Line ("Controls:");
    Ada.Text_IO.Put_Line ("WASD, Arross, -/+");
 

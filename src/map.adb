@@ -1,16 +1,32 @@
 with Unchecked_Deallocation;
-with Tile;             use Tile;
+with Ada.Text_IO;
+with Rand;       use Rand;
 
 package body Map is
    procedure Free is new Unchecked_Deallocation (Tile_Map, Tile_Map_Access);
 
-   procedure Create (Map : in out Map_Type; tile : in Tile_ID_Type) is
+   procedure Create
+        (Map          : in out Map_Type;
+      low_tile     : in Integer;
+      high_tile    : in Integer;
+      default_tile : in Integer;
+      p            : in Float)
+   is
+      R : Integer;
+      F : Float;
    begin
       Map.Tiles := new Tile_Map;
 
       for Y in Map_Height_Type'Range loop
          for X in Map_Width_Type'Range loop
-            Map.Tiles (Y)(X).Create ( tile );
+            F := randomF;
+            R := default_tile;
+
+            if F < p then
+               R := randomN(low_tile, high_tile);
+            end if;
+
+            Map.Tiles (Y)(X).Create ( R );
          end loop;
       end loop;
    end Create;
