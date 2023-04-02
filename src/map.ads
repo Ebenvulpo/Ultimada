@@ -11,7 +11,7 @@ package Map is
    subtype Map_Width_Type  is C.int range 0 .. 256;
    subtype Map_Height_Type is C.int range 0 .. 256;
 
-   procedure Create (Map : in out Map_Type);
+   procedure Create (Map : in out Map_Type; tile : in Tile_ID_Type);
    procedure Render
      (Map      : in out Map_Type;
       Video    : in out Video_Driver;

@@ -7,7 +7,7 @@ package body Game is
    procedure Start (Game : in out Game_Type) is
    begin
       Game.Human_Player.Create;
-      Game.Map.Create;
+      Game.Map.Create(2);
    end Start;
 
    procedure Change_Scale (Game : out Game_Type; dS : in  C.int) is
