@@ -1,5 +1,5 @@
 with Ada.Text_IO;
-with Application;  use Application;
+with Application;
 with Filepath;     use Filepath;
 with Interfaces.C; use Interfaces.C;
 with SDL2;         use SDL2;

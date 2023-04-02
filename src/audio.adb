@@ -5,6 +5,17 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 
 package body Audio is
    package C renames Interfaces.C;
+   
+   procedure Deinit (Audio : in out Audio_Driver) is
+   begin
+      for I in Audio.Waves'Range loop
+	 if Audio.Waves (I) /= null then
+	    Mix_FreeChunk (Audio.Waves (I));
+	 end if;
+      end loop;
+
+      Mix_Quit;
+   end Deinit;
 
    procedure Init (Audio : in out Audio_Driver) is
       Error : C.int;
@@ -24,16 +35,17 @@ package body Audio is
       Load_Audio_Files (Audio);
    end Init;
 
-   procedure Finalize (Audio : in out Audio_Driver) is
+   procedure Play_Sound
+     (Audio : in out Audio_Driver;
+      Sound : in     Natural)
+   is
+      Error : C.Int;
    begin
-      for I in Audio.Waves'Range loop
-	 if Audio.Waves (I) /= null then
-	    Mix_FreeChunk (Audio.Waves (I));
-	 end if;
-      end loop;
-
-      Mix_Quit;
-   end Finalize;
+      Error := Mix_PlayChannel (0, Audio.Waves (Sound), 0);
+      if Error < 0 then
+	 raise Program_Error;
+      end if;
+   end Play_Sound;
 
    procedure Load_Audio_Files (Audio : in out Audio_Driver) is
       Chunk : Mix_Chunk;

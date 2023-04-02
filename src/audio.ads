@@ -1,23 +1,25 @@
-with Ada.Finalization;
 with Ada.Strings.Bounded;
 with SDL2;                use SDL2;
 
 package Audio is
-   type Audio_Driver is new Ada.Finalization.Controlled with private;
+   type Audio_Driver is tagged private;
 
-   procedure Init (Audio : in out Audio_Driver);
+   procedure Deinit (Audio : in out Audio_Driver);
+   procedure Init   (Audio : in out Audio_Driver);
+
+   procedure Play_Sound
+     (Audio : in out Audio_Driver;
+      Sound : in     Natural);
 
 private
    package SB is new Ada.Strings.Bounded.Generic_Bounded_Length (64);
 
    type Wav_Array_Type is array (Natural range <>) of Mix_Chunk;
 
-   type Audio_Driver is new Ada.Finalization.Controlled with
+   type Audio_Driver is tagged
       record
 	 Waves : Wav_Array_Type (0 .. 64) := (others => null);
       end record;
-
-   overriding procedure Finalize (Audio : in out Audio_Driver);
 
    procedure Load_Audio_Files (Audio : in out Audio_Driver);
 

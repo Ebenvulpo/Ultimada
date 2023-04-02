@@ -13,6 +13,7 @@ package body Application is
 
    procedure Deinit is
    begin
+      App.Audio.Deinit;
       App.Finalize;
    end Deinit;
 

@@ -1,4 +1,6 @@
 with Ada.Text_IO;
+with Application;
+with Audio;        use Audio;
 with Interfaces.C; use Interfaces.C;
 
 package body Game is
@@ -48,21 +50,26 @@ package body Game is
    procedure Keyboard_Input (Game : in out Game_Type; Keyboard : in SDL_KeyboardEvent) is
       Player_Location_X : Location_X;
       Player_Location_Y : Location_Y;
+      Audio : Audio_Driver := Application.Get_Audio;
    begin
       Game.Human_Player.Get_Location (Player_Location_X, Player_Location_Y);
       case Keyboard.Keysym.Scancode is
    --  wasd, arrows (uldr)
    when 26 | 82 => --119, w
       Ada.Text_IO.Put_Line ("Up");
+      Audio.Play_Sound (17);
       Game.Human_Player.Change_Location (Player_Location_X, Player_Location_Y - 1);
    when 4 | 80 => --97, a
       Ada.Text_IO.Put_Line ("Left");
+      Audio.Play_Sound (17);
       Game.Human_Player.Change_Location (Player_Location_X - 1, Player_Location_Y);
    when 22 | 81 => --115, s
       Ada.Text_IO.Put_Line ("Down");
+      Audio.Play_Sound (17);
       Game.Human_Player.Change_Location (Player_Location_X, Player_Location_Y + 1);
    when 7 | 79 => --100, d
       Ada.Text_IO.Put_Line ("Right");
+      Audio.Play_Sound (17);
       Game.Human_Player.Change_Location (Player_Location_X + 1, Player_Location_Y);
    when 45 => -- "-"
       Game.Change_Scale(16);
