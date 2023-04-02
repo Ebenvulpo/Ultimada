@@ -5,7 +5,7 @@ with Video;            use Video;
 
 package Application is
    type App_Type is new Ada.Finalization.Controlled with private;
-   
+
    function Get_Audio return Audio_Driver;
    function Get_Video return Video_Driver;
 
@@ -22,7 +22,7 @@ private
       end record;
 
    overriding procedure Finalize (App : in out App_Type);
-   
+
    App : App_Type;
 
    procedure Render;

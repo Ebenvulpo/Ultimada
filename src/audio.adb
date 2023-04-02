@@ -26,13 +26,13 @@ package body Audio is
 
    procedure Finalize (Audio : in out Audio_Driver) is
    begin
-      for I in Wav_Files_Array'Range loop
+      for I in Audio.Waves'Range loop
 	 if Audio.Waves (I) /= null then
 	    Mix_FreeChunk (Audio.Waves (I));
 	 end if;
       end loop;
 
-      --  Mix_Quit;
+      Mix_Quit;
    end Finalize;
 
    procedure Load_Audio_Files (Audio : in out Audio_Driver) is

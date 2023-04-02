@@ -18,7 +18,7 @@ package body Application is
 
    procedure Init is
    begin
-      --  App.Audio.Init;
+      App.Audio.Init;
       App.Video.Init;
       App.Game.Start;
    end Init;
