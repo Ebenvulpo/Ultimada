@@ -8,7 +8,7 @@ package Application is
    
    function Get_Audio return Audio_Driver;
    function Get_Video return Video_Driver;
-   
+
    procedure Deinit;
    procedure Init;
    procedure Game_Loop;

@@ -9,7 +9,7 @@ package Player is
 
    subtype Location_X is Map.Map_Width_Type;
    subtype Location_Y is Map.Map_Height_Type;
-   
+
    procedure Change_Location
      (Player : out Player_Type;
       X      : in  Location_X;
