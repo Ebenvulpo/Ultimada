@@ -3,7 +3,8 @@ with SDL2; use SDL2;
 package body Application is
    procedure Init (App : in out App_Type) is
    begin
-      Init (App.Video);
+      App.Video.Init;
+      App.Game.Start;
    end Init;
 
    procedure Game_Loop (App : in out App_Type) is
@@ -25,8 +26,7 @@ package body Application is
    procedure Render (App : in out App_Type) is
    begin
       Start (App.Video);
-      App.Video.Draw_Rectangle (64, 64, 0, 0, 16#FF#, 16#FF#, 16#FF#);
-      App.Video.Draw_Texture (128, 128, 0);
+      App.Game.Render (App.Video);
       Finish (App.Video);
    end Render;
 

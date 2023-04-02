@@ -7,8 +7,8 @@ package Player is
 
    type Player_Type is tagged private;
 
-   subtype Location_X is Map.Map_Width;
-   subtype Location_Y is Map.Map_Height;
+   subtype Location_X is Map.Map_Width_Type;
+   subtype Location_Y is Map.Map_Height_Type;
 
    procedure Create
      (Player : out Player_Type;

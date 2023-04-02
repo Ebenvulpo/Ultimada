@@ -1,6 +1,6 @@
 package Tile is
-   type Tile_Type    is tagged private;
-   type Tile_ID_Type is range 0 .. 255;
+   type    Tile_Type    is tagged private;
+   subtype Tile_ID_Type is Natural;
 
    procedure Create (Tile: out Tile_Type; ID : in Tile_ID_Type := 0);
 

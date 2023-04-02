@@ -5,7 +5,8 @@ with Video;            use Video;
 
 package Game is
    type Game_Type is new Ada.Finalization.Controlled with private;
-
+   
+   procedure Start (Game : in out Game_Type);
    procedure Render (Game : in out Game_Type; Video : in out Video_Driver);
 
 private
