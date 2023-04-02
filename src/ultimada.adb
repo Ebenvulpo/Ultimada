@@ -7,7 +7,6 @@ with SDL2;         use SDL2;
 procedure Ultimada is
    package C renames Interfaces.C;
 
-   App   : App_Type;
    Error : C.int;
 begin
    Error := SDL_Init (16#0000_0020# or 16#0000_4000# or 16#0000_0010#);
@@ -20,11 +19,11 @@ begin
    Ada.Text_IO.Put_Line ("Hello World Ultimada!");
 
    Ada.Text_IO.Put_Line ("Controls:");
-   Ada.Text_IO.Put_Line ("WASD, Arros, -/+");
+   Ada.Text_IO.Put_Line ("WASD, Arross, -/+");
 
-   App.Init;
-   App.Game_Loop;
-   App.Finalize;
+   Application.Init;
+   Application.Game_Loop;
+   Application.Deinit;
 
    Free_Filepath;
 

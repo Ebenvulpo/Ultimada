@@ -1,13 +1,29 @@
 with SDL2; use SDL2;
 
 package body Application is
-   procedure Init (App : in out App_Type) is
+   function Get_Audio return Audio_Driver is
    begin
+      return App.Audio;
+   end Get_Audio;
+
+   function Get_Video return Video_Driver is
+   begin
+      return App.Video;
+   end Get_Video;
+
+   procedure Deinit is
+   begin
+      App.Finalize;
+   end Deinit;
+
+   procedure Init is
+   begin
+      App.Audio.Init;
       App.Video.Init;
       App.Game.Start;
    end Init;
 
-   procedure Game_Loop (App : in out App_Type) is
+   procedure Game_Loop is
       Event : aliased SDL_Event;
    begin
       loop
@@ -18,13 +34,13 @@ package body Application is
 	 end case;
 
 	 App.Game.Input (Event);
-	 Render (App);
+	 Render;
       end loop;
   <<Exit_Loop>>
       return;
    end Game_Loop;
 
-   procedure Render (App : in out App_Type) is
+   procedure Render is
    begin
       Start (App.Video);
       App.Game.Render (App.Video);
