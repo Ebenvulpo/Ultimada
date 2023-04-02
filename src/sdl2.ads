@@ -6,16 +6,22 @@ with Unchecked_Conversion;
 package SDL2 is
    package C renames Interfaces.C;
 
+   type Dummy_Mix_Chunk    is limited private;
+   type Dummy_Mix_Music    is limited private;
    type Dummy_SDL_Window   is limited private;
    type Dummy_SDL_Renderer is limited private;
    type Dummy_SDL_Surface  is limited private;
    type Dummy_SDL_Texture  is limited private;
 
+   type Mix_Chunk    is access Dummy_Mix_Chunk;
+   type Mix_Music    is access Dummy_Mix_Music;
    type SDL_Window   is access Dummy_SDL_Window;
    type SDL_Renderer is access Dummy_SDL_Renderer;
    type SDL_Surface  is access Dummy_SDL_Surface;
    type SDL_Texture  is access Dummy_SDL_Texture;
 
+   pragma Convention (C, Mix_Chunk);
+   pragma Convention (C, Mix_Music);
    pragma Convention (C, SDL_Window);
    pragma Convention (C, SDL_Renderer);
    pragma Convention (C, SDL_Surface);
@@ -136,7 +142,42 @@ package SDL2 is
 
    function SDL_LoadBMP (File : in String) return SDL_Surface;
 
+   function Mix_Init (Flags : in C.int) return C.int with
+     Import => True, Convention => C, External_Name => "Mix_Init";
+
+   procedure Mix_Quit with
+     Import => True, Convention => C, External_Name => "Mix_Quit";
+
+   function Mix_OpenAudio
+     (Frequencey : in C.int;
+      Format     : in C.unsigned_short;
+      Channel    : in C.int;
+      Chunksize  : in C.int)
+     return C.int with
+     Import => True, Convention => C, External_Name => "Mix_OpenAudio";
+
+   function Mix_LoadWAV (File : in System.Address) return Mix_Chunk with
+     Import => True, Convention => C, External_Name => "Mix_LoadWAV";
+
+   function Mix_PlayChannel
+     (Channel : in C.int;
+      Chunk   : in Mix_Chunk;
+      Loops   : in C.int)
+     return C.int with
+     Import => True, Convention => C, External_Name => "Mix_PlayChannel";
+
+   procedure Mix_FreeChunk (Chunk : in Mix_Chunk) with
+     Import => True, Convention => C, External_Name => "Mix_FreeChunk";
+
+   function Mix_LoadMUS (File : in C.Strings.chars_ptr) return Mix_Music with
+     Import => True, Convention => C, External_Name => "Mix_LoadMUS";
+
+   procedure Mix_FreeMusic (Music : in Mix_Music) with
+     Import => True, Convention => C, External_Name => "Mix_FreeMusic";
+
 private
+   type Dummy_Mix_Chunk    is null record;
+   type Dummy_Mix_Music    is null record;
    type Dummy_SDL_Window   is null record;
    type Dummy_SDL_Renderer is null record;
    type Dummy_SDL_Surface  is null record;
