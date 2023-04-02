@@ -24,6 +24,10 @@ package Video is
 
    procedure Init (Video : in out Video_Driver);
 
+   procedure Change_scale
+     (Video   : in out Video_Driver;
+      S       : in     C.int);
+
 private
    type Texture_Array is array (Natural range <>) of SDL_Texture;
 

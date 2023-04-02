@@ -91,6 +91,11 @@ package SDL2 is
    procedure SDL_DestroyRenderer (Renderer : in SDL_Renderer) with
      Import => True, Convention => C, External_Name => "SDL_DestroyRenderer";
 
+   function SDL_RenderSetLogicalSize
+     (Renderer : in SDL_Renderer; W, H : C.int)
+     return C.int with
+     Import => True, Convention => C, External_Name => "SDL_RenderSetLogicalSize";
+
    function SDL_SetRenderDrawColor
      (Renderer : in SDL_Renderer; R, G, B, A : in C.unsigned_char)
      return C.int with

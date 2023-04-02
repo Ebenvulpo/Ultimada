@@ -6,11 +6,11 @@ package body Map is
    procedure Create (Map : in out Map_Type) is
    begin
       Map.Tiles := new Tile_Map;
- 
+
       for Y in Map_Height_Type'Range loop
-	 for X in Map_Width_Type'Range loop
-	    Map.Tiles (Y)(X).Create (3);
-	 end loop;
+         for X in Map_Width_Type'Range loop
+            Map.Tiles (Y)(X).Create (3);
+         end loop;
       end loop;
    end Create;
 
@@ -22,16 +22,16 @@ package body Map is
    is
    begin
       for Y in Map_Height_Type'Range loop
-	 for X in Map_Width_Type'Range loop
-	    Video.Draw_Tile ((X + Offset_X), (Y + Offset_Y), Map.Tiles (Y)(X).Get_ID);
-	 end loop;
+         for X in Map_Width_Type'Range loop
+            Video.Draw_Tile ((X + Offset_X), (Y + Offset_Y), Map.Tiles (Y)(X).Get_ID);
+         end loop;
       end loop;
    end Render;
 
    procedure Finalize (Map : in out Map_Type) is
    begin
       if Map.Tiles /= null then
-	 Free (Map.Tiles);
+         Free (Map.Tiles);
       end if;
    end Finalize;
 end Map;

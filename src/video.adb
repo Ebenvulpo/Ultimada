@@ -68,11 +68,22 @@ package body Video is
    procedure Init (Video : in out Video_Driver) is
       Name : aliased C.char_array := "Ultimada" & C.nul;
    begin
-      Video.Window := SDL_CreateWindow (Name'Address, 200, 200, 640, 480, 0);
+      Video.Window := SDL_CreateWindow (Name'Address, 200, 200, 600, 600, 0);
       Video.Renderer := SDL_CreateRenderer (Video.Window, -1, 0);
-
       Video.Load_Textures;
    end Init;
+
+   procedure Change_scale
+     (Video   : in out Video_Driver;
+      S       : in     C.int) is
+      scale_error : C.int;
+   begin
+      scale_error := SDL_RenderSetLogicalSize(Video.Renderer,S,S);
+      if scale_error = -1 then
+         Ada.Text_IO.Put_Line("Couldn't Scale");
+      end if;
+   end Change_scale;
+
 
    procedure Finalize (Video : in out Video_Driver) is
    begin
@@ -98,7 +109,8 @@ package body Video is
 	 Ada.Text_IO.Put      ("Loading: ");
 	 Ada.Text_IO.Put_Line (SB.To_String (Bitmap_Array (I)));
 
-	 Surface := SDL_LoadBMP (Value (Filepath.Get) & "assets\" & "bmps\" & SB.To_String (Bitmap_Array (I)));
+	 Surface := SDL_LoadBMP (Value (Filepath.Get) & "../assets/" & "bmps/" & SB.To_String (Bitmap_Array (I))); -- Linux
+	--   Surface := SDL_LoadBMP (Value (Filepath.Get) & "assets\" & "bmps\" & SB.To_String (Bitmap_Array (I))); -- Windows
 	 SDL_SetColorKey (Surface, 1, 16#FF00CC#);
 	 Video.Textures (I) := SDL_CreateTextureFromSurface (Video.Renderer, Surface);
 	 SDL_FreeSurface (Surface);
