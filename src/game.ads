@@ -22,7 +22,7 @@ private
          Map          : Map_Type;
          Human_Player : Player_Type;
          Players      : Player_Array (0 .. 20);
-         Logical_Size : Interfaces.C.int := 300;
+         Logical_Size : Interfaces.C.int := 128;
       end record;
 
    overriding procedure Finalize (Game : in out Game_Type);

@@ -68,7 +68,7 @@ package body Video is
    procedure Init (Video : in out Video_Driver) is
       Name : aliased C.char_array := "Ultimada" & C.nul;
    begin
-      Video.Window := SDL_CreateWindow (Name'Address, 200, 200, 600, 600, 0);
+      Video.Window := SDL_CreateWindow (Name'Address, 200, 200, 512, 512, 0);
       Video.Renderer := SDL_CreateRenderer (Video.Window, -1, 0);
       Video.Load_Textures;
    end Init;

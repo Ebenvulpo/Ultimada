@@ -26,8 +26,8 @@ package body Game is
    begin
       Game.Human_Player.Get_Location (Player_Location_X, Player_Location_Y);
       Video.Change_Scale(Game.Logical_Size);
-      Game.Map.Render (Video, (-Player_Location_X + 5), (-Player_Location_Y + 5));
-      Video.Draw_Tile (5, 5, 13);
+      Game.Map.Render (Video, (-Player_Location_X + 2), (-Player_Location_Y + 2));
+      Video.Draw_Tile (2, 2, 13);
    end Render;
 
    procedure Input (Game : in out Game_Type; Event : in SDL_Event) is
@@ -63,9 +63,9 @@ package body Game is
       Ada.Text_IO.Put_Line ("Right");
       Game.Human_Player.Change_Location (Player_Location_X + 1, Player_Location_Y);
    when 45 => -- "-"
-      Game.Change_Scale(50);
+      Game.Change_Scale(16);
    when 46 => -- "+"
-      Game.Change_Scale(-50);
+      Game.Change_Scale(-16);
    --   when others => null;
    when others => --added for debugging
       Ada.Text_IO.Put_Line (Keyboard.Keysym.Scancode'Image);

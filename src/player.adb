@@ -5,8 +5,10 @@ package body Player is
       Y      : in  Location_Y)
    is
    begin
+      --  if 0 <= X and 0 <= Y then
       Player.X := X;
       Player.Y := Y;
+      --  end if;
    end Change_Location;
 
    procedure Create

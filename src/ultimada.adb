@@ -14,10 +14,13 @@ begin
    if Error < 0 then
       raise Program_Error;
    end if;
-   
+
    Load_Filepath;
 
    Ada.Text_IO.Put_Line ("Hello World Ultimada!");
+
+   Ada.Text_IO.Put_Line ("Controls:");
+   Ada.Text_IO.Put_Line ("WASD, Arros, -/+");
 
    App.Init;
    App.Game_Loop;
