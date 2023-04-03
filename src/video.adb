@@ -67,9 +67,13 @@ package body Video is
    procedure Init (Video : in out Video_Driver) is
       Name : aliased C.char_array := "Ultimada" & C.nul;
    begin
+      Ada.Text_IO.Put_Line ("Starting Video Driver");
+
       Video.Window := SDL_CreateWindow (Name'Address, 200, 200, 512, 512, 0);
       Video.Renderer := SDL_CreateRenderer (Video.Window, -1, 0);
       Video.Load_Textures;
+
+      Ada.Text_IO.New_Line;
    end Init;
 
    procedure Change_scale
@@ -103,6 +107,7 @@ package body Video is
    procedure Load_Textures (Video : in out Video_Driver) is
       Surface : SDL_Surface;
    begin
+      Ada.Text_IO.Put_Line ("Loading Textures...");
       for I in Bitmap_Array'Range loop
 	 Ada.Text_IO.Put      ("Loading: ");
 	 Ada.Text_IO.Put_Line (SB.To_String (Bitmap_Array (I)));

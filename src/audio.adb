@@ -32,6 +32,8 @@ package body Audio is
       end if;
 
       Load_Audio_Files (Audio);
+
+      Ada.Text_IO.New_Line;
    end Init;
 
    procedure Play_Sound

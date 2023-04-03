@@ -19,6 +19,7 @@ begin
    Ada.Text_IO.Put_Line ("Hello World Ultimada!");
    Ada.Text_IO.Put_Line ("Controls:");
    Ada.Text_IO.Put_Line ("WASD, Arross, -/+");
+   Ada.Text_IO.New_Line;
 
    Application.Init;
    Application.Game_Loop;
