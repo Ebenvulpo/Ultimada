@@ -7,6 +7,7 @@ with Interfaces.C;
 
 package Game is
    type Game_Type is new Ada.Finalization.Controlled with private;
+
    procedure Start (Game : in out Game_Type);
    procedure Render (Game : in out Game_Type; Video : in out Video_Driver);
 
@@ -28,5 +29,5 @@ private
 
    overriding procedure Finalize (Game : in out Game_Type);
 
-   procedure Keyboard_Input (Game : in out Game_Type; Keyboard : in SDL_KeyboardEvent);
+   procedure Keyboard_Input (Game : in out Game_Type; Event : in SDL_Event);
 end Game;

@@ -1,7 +1,6 @@
 with Interfaces.C;         use Interfaces.C;
 with Interfaces.C.Strings;
 with System;               use System;
-with Unchecked_Conversion;
 
 package SDL2 is
    package C renames Interfaces.C;
@@ -26,9 +25,6 @@ package SDL2 is
    pragma Convention (C, SDL_Renderer);
    pragma Convention (C, SDL_Surface);
    pragma Convention (C, SDL_Texture);
-   
-   type Padding_Array is array (C.size_t range <>) of aliased C.unsigned_char;
-   pragma Convention (C, Padding_Array);
 
    type SDL_Keysym is
       record
@@ -49,16 +45,24 @@ package SDL2 is
 	 Padding2   : aliased C.unsigned_char;
 	 Padding3   : aliased C.unsigned_char;
 	 Keysym     : aliased SDL_Keysym;
-	 Padding    : aliased Padding_Array (1 .. 22);
       end record;
    pragma Convention (C, SDL_KeyboardEvent);
 
-   type SDL_Event is
+   type Event_Padding_Array is array (C.size_t range <>) of aliased C.unsigned_char;
+   pragma Convention (C, Event_Padding_Array);
+
+   type SDL_Event (T : C.unsigned := 0) is
       record
-	 Event_Type : aliased C.unsigned;
-	 Padding    : aliased Padding_Array (1 .. 52);
+	 case T is
+	    when 16#0# =>
+	       Event_Type : aliased C.unsigned;
+	    when 16#300# =>
+	       Key        : aliased SDL_KeyboardEvent;
+	    when others =>
+	       Padding    : aliased Event_Padding_Array (1 .. 56);
+	 end case;
       end record;
-   pragma Convention (C, SDL_Event);
+   pragma Unchecked_Union (SDL_Event);
 
    type SDL_Rect is
       record
@@ -66,8 +70,6 @@ package SDL2 is
 	 W, H : aliased C.int;
       end record;
    pragma Convention (C, SDL_Rect);
-
-   function Get_KeyboardEvent is new Unchecked_Conversion (SDL_Event, SDL_KeyboardEvent);
 
    function SDL_GetBasePath return C.Strings.chars_ptr with
      Import => True, Convention => C, External_Name => "SDL_GetBasePath";

@@ -109,8 +109,7 @@ package body Video is
 	 Ada.Text_IO.Put      ("Loading: ");
 	 Ada.Text_IO.Put_Line (SB.To_String (Bitmap_Array (I)));
 
-	 Surface := SDL_LoadBMP (Value (Filepath.Get) & "../assets/" & "bmps/" & SB.To_String (Bitmap_Array (I))); -- Linux
-	--  Surface := SDL_LoadBMP (Value (Filepath.Get) & "assets\" & "bmps\" & SB.To_String (Bitmap_Array (I))); -- Windows
+	 Surface := SDL_LoadBMP (Value (Filepath.Get) & "assets/" & "bmps/" & SB.To_String (Bitmap_Array (I)));
 	 SDL_SetColorKey (Surface, 1, 16#FF00CC#);
 	 Video.Textures (I) := SDL_CreateTextureFromSurface (Video.Renderer, Surface);
 	 SDL_FreeSurface (Surface);

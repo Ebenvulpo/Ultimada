@@ -35,49 +35,47 @@ package body Game is
    end Render;
 
    procedure Input (Game : in out Game_Type; Event : in SDL_Event) is
-      Keyboard_Event    : SDL_KeyboardEvent;
    begin
       case Event.Event_Type is
 	 --  SDL_Keydown
 	 when 16#300# =>
 	    Ada.Text_IO.Put_Line ("Keyboard_Event");
-	    Keyboard_Event := Get_KeyboardEvent (Event);
-	    Keyboard_Input (Game, Keyboard_Event);
+	    Keyboard_Input (Game, Event);
 	 when others => null;
       end case;
    end Input;
 
-   procedure Keyboard_Input (Game : in out Game_Type; Keyboard : in SDL_KeyboardEvent) is
+   procedure Keyboard_Input (Game : in out Game_Type; Event : in SDL_Event) is
       Player_Location_X : Location_X;
       Player_Location_Y : Location_Y;
       Audio : Audio_Driver := Application.Get_Audio;
    begin
       Game.Human_Player.Get_Location (Player_Location_X, Player_Location_Y);
-      case Keyboard.Keysym.Scancode is
-   --  wasd, arrows (uldr)
-   when 26 | 82 => --119, w
-      Ada.Text_IO.Put_Line ("Up");
-      Audio.Play_Sound (17);
-      Game.Human_Player.Change_Location (Player_Location_X, Player_Location_Y - 1);
-   when 4 | 80 => --97, a
-      Ada.Text_IO.Put_Line ("Left");
-      Audio.Play_Sound (17);
-      Game.Human_Player.Change_Location (Player_Location_X - 1, Player_Location_Y);
-   when 22 | 81 => --115, s
-      Ada.Text_IO.Put_Line ("Down");
-      Audio.Play_Sound (17);
-      Game.Human_Player.Change_Location (Player_Location_X, Player_Location_Y + 1);
-   when 7 | 79 => --100, d
-      Ada.Text_IO.Put_Line ("Right");
-      Audio.Play_Sound (17);
-      Game.Human_Player.Change_Location (Player_Location_X + 1, Player_Location_Y);
-   when 45 => -- "-"
-      Game.Change_Scale(16);
-   when 46 => -- "+"
-      Game.Change_Scale(-16);
-   --   when others => null;
-   when others => --added for debugging
-      Ada.Text_IO.Put_Line (Keyboard.Keysym.Scancode'Image);
+      case Event.Key.Keysym.Scancode is
+	 --  wasd, arrows (uldr)
+	 when 26 | 82 => --119, w
+	    Ada.Text_IO.Put_Line ("Up");
+	    Audio.Play_Sound (17);
+	    Game.Human_Player.Change_Location (Player_Location_X, Player_Location_Y - 1);
+	 when 4 | 80 => --97, a
+	    Ada.Text_IO.Put_Line ("Left");
+	    Audio.Play_Sound (17);
+	    Game.Human_Player.Change_Location (Player_Location_X - 1, Player_Location_Y);
+	 when 22 | 81 => --115, s
+	    Ada.Text_IO.Put_Line ("Down");
+	    Audio.Play_Sound (17);
+	    Game.Human_Player.Change_Location (Player_Location_X, Player_Location_Y + 1);
+	 when 7 | 79 => --100, d
+	    Ada.Text_IO.Put_Line ("Right");
+	    Audio.Play_Sound (17);
+	    Game.Human_Player.Change_Location (Player_Location_X + 1, Player_Location_Y);
+	 when 45 => -- "-"
+	    Game.Change_Scale(16);
+	 when 46 => -- "+"
+	    Game.Change_Scale(-16);
+	    --   when others => null;
+	 when others => --added for debugging
+	    Ada.Text_IO.Put_Line (Event.Key.Keysym.Scancode'Image);
       end case;
    end Keyboard_Input;
 
