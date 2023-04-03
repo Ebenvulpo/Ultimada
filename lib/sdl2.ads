@@ -147,6 +147,9 @@ package SDL2 is
 
    function SDL_LoadBMP (File : in String) return SDL_Surface;
 
+   function SDL_GetPlatform return C.Strings.chars_ptr with
+     Import => True, Convention => C, External_Name => "SDL_GetPlatform";
+
    function Mix_Init (Flags : in C.int) return C.int with
      Import => True, Convention => C, External_Name => "Mix_Init";
 

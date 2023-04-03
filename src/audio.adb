@@ -1,7 +1,6 @@
 with Ada.Text_IO;
 with Filepath;
-with Interfaces.C;         use Interfaces.C;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
+with Interfaces.C; use Interfaces.C;
 
 package body Audio is
    package C renames Interfaces.C;
@@ -52,19 +51,15 @@ package body Audio is
    begin
       Ada.Text_IO.Put_Line ("Loading Audio Files...");
       for I in Wav_Files_Array'Range loop
-	 declare
-	    File : aliased constant String := Value (Filepath.Get) & "assets\" & "wavs\" & SB.To_String (Wav_Files_Array (I));
-	 begin
-	    Ada.Text_IO.Put      ("Loading: ");
-	    Ada.Text_IO.Put_Line (SB.To_String (Wav_Files_Array (I)));
+	 Ada.Text_IO.Put      ("Loading: ");
+	 Ada.Text_IO.Put_Line (SB.To_String (Wav_Files_Array (I)));
 
-	    Chunk := Mix_LoadWAV (File);
-	    if Chunk = null then
-	       raise Program_Error;
-	    end if;
+	 Chunk := Mix_LoadWAV (Filepath.Get_WAV (SB.To_String (Wav_Files_Array (I))));
+	 if Chunk = null then
+	    raise Program_Error;
+	 end if;
 
-	    Audio.Waves (I) := Chunk;
-	 end;
+	 Audio.Waves (I) := Chunk;
       end loop;
    end Load_Audio_Files;
 end Audio;
