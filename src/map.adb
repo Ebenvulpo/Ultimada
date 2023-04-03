@@ -48,15 +48,17 @@ package body Map is
    --  Map Subprograms  --
    -----------------------
    procedure Render
-     (Map      : in out Map_Type;
-      Video    : in out Video_Driver;
-      Offset_X : in     C.int;
-      Offset_Y : in     C.int)
+     (Map            : in out Map_Type;
+      Video          : in out Video_Driver;
+      Offset_X       : in     C.int;
+      Offset_Y       : in     C.int;
+      Pixel_Offset_X : in     C.int;
+      Pixel_Offset_Y : in     C.int)
    is
    begin
       for Y in Map_Height_Type'Range loop
          for X in Map_Width_Type'Range loop
-            Video.Draw_Tile ((X + Offset_X), (Y + Offset_Y), Map.Tiles (Y)(X).Get_ID);
+            Video.Draw_Tile ((X + Offset_X), (Y + Offset_Y), Map.Tiles (Y)(X).Get_ID, Pixel_Offset_X, Pixel_Offset_Y);
          end loop;
       end loop;
    end Render;

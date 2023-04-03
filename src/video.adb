@@ -81,15 +81,17 @@ package body Video is
    end Draw_Rectangle;
 
    procedure Draw_Tile
-     (Video  : in out Video_Driver;
-      X, Y   : in     C.int;
-      Number : in     Natural)
+     (Video          : in out Video_Driver;
+      X, Y           : in     C.int;
+      Number         : in     Natural;
+      Pixel_Offset_X : in     C.int;
+      Pixel_Offset_Y : in     C.int)
    is
       Rect  : aliased SDL_Rect;
       Error :         C.int;
    begin
-      Rect.X := X * 16;
-      Rect.Y := Y * 16;
+      Rect.X := (X * 16) + Pixel_Offset_X;
+      Rect.Y := (Y * 16) + Pixel_Offset_Y;
       Rect.W := 16;
       Rect.H := 16;
 

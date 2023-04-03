@@ -47,10 +47,10 @@ package body Game is
       SOX := (Game.Logical_Size / 16) / 2;
       SOY := (Game.Logical_Size / 16) / 2;
 
-      Game.Map.Render  (Video, -Player_Location_X + SOX, -Player_Location_Y + SOY);
-      Game.Objs.Render (Video, -Player_Location_X + SOX, -Player_Location_Y + SOY);
+      Game.Map.Render  (Video, -Player_Location_X + SOX, -Player_Location_Y + SOY, -8, -8);
+      Game.Objs.Render (Video, -Player_Location_X + SOX, -Player_Location_Y + SOY, -8, -8);
 
-      Video.Draw_Tile (SOX, SOY, 14);
+      Video.Draw_Tile (SOX, SOY, 14, -8, -8);
    end Render;
 
    procedure Input (Game : in out Game_Type; Event : in SDL_Event) is

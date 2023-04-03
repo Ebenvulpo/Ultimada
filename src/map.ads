@@ -25,10 +25,12 @@ package Map is
    --  Map Subprograms  --
    -----------------------
    procedure Render
-     (Map      : in out Map_Type;
-      Video    : in out Video_Driver;
-      Offset_X : in     C.int;
-      Offset_Y : in     C.int);
+     (Map            : in out Map_Type;
+      Video          : in out Video_Driver;
+      Offset_X       : in     C.int;
+      Offset_Y       : in     C.int;
+      Pixel_Offset_X : in     C.int;
+      Pixel_Offset_Y : in     C.int);
 
 private
    type Tile_Row is array (C.int range 0 .. Map_Width_Type'Last) of Tile_Type;

@@ -24,9 +24,11 @@ package Video is
       R, G, B : in     C.unsigned_char);
 
    procedure Draw_Tile
-     (Video  : in out Video_Driver;
-      X, Y   : in     C.int;
-      Number : in     Natural);
+     (Video          : in out Video_Driver;
+      X, Y           : in     C.int;
+      Number         : in     Natural;
+      Pixel_Offset_X : in     C.int;
+      Pixel_Offset_Y : in     C.int);
 
    procedure Change_scale
      (Video   : in out Video_Driver;
