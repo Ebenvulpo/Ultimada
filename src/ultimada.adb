@@ -3,6 +3,7 @@ with Application;
 with Filepath;
 with Interfaces.C; use Interfaces.C;
 with SDL2;         use SDL2;
+with Version;
 
 procedure Ultimada is
    package C renames Interfaces.C;
@@ -16,7 +17,7 @@ begin
 
    Filepath.Initialize;
 
-   Ada.Text_IO.Put_Line ("Hello World Ultimada!");
+   Ada.Text_IO.Put_Line ("Hello World Ultimada (" & Version.Get & ")!");
    Ada.Text_IO.Put_Line ("Controls:");
    Ada.Text_IO.Put_Line ("WASD, Arross, -/+");
    Ada.Text_IO.New_Line;
