@@ -37,12 +37,20 @@ package body Game is
    procedure Render (Game : in out Game_Type; Video : in out Video_Driver) is
       Player_Location_X : C.int;
       Player_Location_Y : C.int;
+      SOX : C.int;
+      SOY : C.int;
    begin
       Game.Human_Player.Get_Location (Player_Location_X, Player_Location_Y);
+
       Video.Change_Scale(Game.Logical_Size);
-      Game.Map.Render (Video, (-Player_Location_X + 2), (-Player_Location_Y + 2));
-      Game.Objs.Render (Video, (-Player_Location_X + 2), (-Player_Location_Y + 2));
-      Video.Draw_Tile (2, 2, 14);
+
+      SOX := (Game.Logical_Size / 16) / 2;
+      SOY := (Game.Logical_Size / 16) / 2;
+
+      Game.Map.Render  (Video, -Player_Location_X + SOX, -Player_Location_Y + SOY);
+      Game.Objs.Render (Video, -Player_Location_X + SOX, -Player_Location_Y + SOY);
+
+      Video.Draw_Tile (SOX, SOY, 14);
    end Render;
 
    procedure Input (Game : in out Game_Type; Event : in SDL_Event) is
@@ -84,9 +92,9 @@ package body Game is
 	    Audio.Play_Sound (17);
 	    Game.Human_Player.Change_Location (Player_Location_X + 1, Player_Location_Y);
 	 when 45 => -- "-"
-	    Game.Change_Scale(16);
+	    Game.Change_Scale(32);
 	 when 46 => -- "+"
-	    Game.Change_Scale(-16);
+	    Game.Change_Scale(-32);
 	    --   when others => null;
 	 when others => --added for debugging
 	    Ada.Text_IO.Put_Line (Event.Key.Keysym.Scancode'Image);
