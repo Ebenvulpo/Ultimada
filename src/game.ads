@@ -1,14 +1,21 @@
-with Ada.Finalization;
-with Map;              use Map;
-with SDL2;             use SDL2;
-with Player;           use Player;
-with Video;            use Video;
+with Map;          use Map;
+with SDL2;         use SDL2;
+with Player;       use Player;
+with Video;        use Video;
 with Interfaces.C;
 
 package Game is
-   type Game_Type is new Ada.Finalization.Controlled with private;
+   type Game_Type is tagged private;
+   
+   ----------------------------------
+   --  Initialization Subprograms  --
+   ----------------------------------
+   procedure Deinitialize (Game : in out Game_Type);
+   procedure Initialize   (Game : in out Game_Type);
 
-   procedure Start (Game : in out Game_Type);
+   ------------------------
+   --  Game Subprograms  --
+   ------------------------
    procedure Render (Game : in out Game_Type; Video : in out Video_Driver);
 
    procedure Input (Game : in out Game_Type; Event : in SDL_Event);
@@ -18,7 +25,7 @@ package Game is
 private
    type Player_Array is array (Natural range <>) of Player_Type;
 
-   type Game_Type is new Ada.Finalization.Controlled with
+   type Game_Type is tagged
       record
          Map          : Map_Type;
          Objs         : Map_Type;
@@ -26,8 +33,6 @@ private
          Players      : Player_Array (0 .. 20);
          Logical_Size : Interfaces.C.int := 256;
       end record;
-
-   overriding procedure Finalize (Game : in out Game_Type);
 
    procedure Keyboard_Input (Game : in out Game_Type; Event : in SDL_Event);
 end Game;

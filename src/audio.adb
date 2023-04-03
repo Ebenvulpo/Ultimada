@@ -5,7 +5,10 @@ with Interfaces.C; use Interfaces.C;
 package body Audio is
    package C renames Interfaces.C;
 
-   procedure Deinit (Audio : in out Audio_Driver) is
+   ----------------------------------
+   --  Initialization Subprograms  --
+   ----------------------------------
+   procedure Deinitialize (Audio : in out Audio_Driver) is
    begin
       for I in Audio.Waves'Range loop
 	 if Audio.Waves (I) /= null then
@@ -14,9 +17,9 @@ package body Audio is
       end loop;
 
       Mix_Quit;
-   end Deinit;
+   end Deinitialize;
 
-   procedure Init (Audio : in out Audio_Driver) is
+   procedure Initialize (Audio : in out Audio_Driver) is
       Error : C.int;
    begin
       Ada.Text_IO.Put_Line ("Staring Audio Driver");
@@ -34,8 +37,11 @@ package body Audio is
       Load_Audio_Files (Audio);
 
       Ada.Text_IO.New_Line;
-   end Init;
+   end Initialize;
 
+   -------------------------
+   --  Audio Subprograms  --
+   -------------------------
    procedure Play_Sound
      (Audio : in out Audio_Driver;
       Sound : in     Natural)
@@ -48,15 +54,18 @@ package body Audio is
       end if;
    end Play_Sound;
 
+   ---------------------------
+   --  Private Subprograms  --
+   ---------------------------
    procedure Load_Audio_Files (Audio : in out Audio_Driver) is
       Chunk : Mix_Chunk;
    begin
       Ada.Text_IO.Put_Line ("Loading Audio Files...");
-      for I in Wav_Files_Array'Range loop
+      for I in WAV_Files_Array'Range loop
 	 Ada.Text_IO.Put      ("Loading: ");
-	 Ada.Text_IO.Put_Line (SB.To_String (Wav_Files_Array (I)));
+	 Ada.Text_IO.Put_Line (SB.To_String (WAV_Files_Array (I)));
 
-	 Chunk := Mix_LoadWAV (Filepath.Get_WAV (SB.To_String (Wav_Files_Array (I))));
+	 Chunk := Mix_LoadWAV (Filepath.Get_WAV (SB.To_String (WAV_Files_Array (I))));
 	 if Chunk = null then
 	    raise Program_Error;
 	 end if;

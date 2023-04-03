@@ -4,6 +4,41 @@ with Filepath;
 package body Video is
    package C renames Interfaces.C;
 
+   ----------------------------------
+   --  Initialization Subprograms  --
+   ----------------------------------
+   procedure Deinitialize (Video : in out Video_Driver) is
+   begin
+      for I in Video.Textures'Range loop
+	 if Video.Textures (I) /= null then
+	    SDL_DestroyTexture (Video.Textures (I));
+	 end if;
+      end loop;
+
+      if Video.Renderer /= null then
+	 SDL_DestroyRenderer (Video.Renderer);
+      end if;
+
+      if Video.Window /= null then
+	 SDL_DestroyWindow (Video.Window);
+      end if;
+   end Deinitialize;
+
+   procedure Initialize (Video : in out Video_Driver) is
+      Name : aliased C.char_array := "Ultimada" & C.nul;
+   begin
+      Ada.Text_IO.Put_Line ("Starting Video Driver");
+
+      Video.Window := SDL_CreateWindow (Name'Address, 200, 200, 512, 512, 0);
+      Video.Renderer := SDL_CreateRenderer (Video.Window, -1, 0);
+      Video.Load_Textures;
+
+      Ada.Text_IO.New_Line;
+   end Initialize;
+
+   -------------------------------
+   --  Renderering Subprograms  --
+   -------------------------------
    procedure Start (Video : in out Video_Driver) is
       Error : C.int;
    begin
@@ -64,18 +99,6 @@ package body Video is
       end if;
    end Draw_Tile;
 
-   procedure Init (Video : in out Video_Driver) is
-      Name : aliased C.char_array := "Ultimada" & C.nul;
-   begin
-      Ada.Text_IO.Put_Line ("Starting Video Driver");
-
-      Video.Window := SDL_CreateWindow (Name'Address, 200, 200, 512, 512, 0);
-      Video.Renderer := SDL_CreateRenderer (Video.Window, -1, 0);
-      Video.Load_Textures;
-
-      Ada.Text_IO.New_Line;
-   end Init;
-
    procedure Change_scale
      (Video   : in out Video_Driver;
       S       : in     C.int) is
@@ -87,23 +110,9 @@ package body Video is
       end if;
    end Change_scale;
 
-   procedure Finalize (Video : in out Video_Driver) is
-   begin
-      for I in Video.Textures'Range loop
-	 if Video.Textures (I) /= null then
-	    SDL_DestroyTexture (Video.Textures (I));
-	 end if;
-      end loop;
-
-      if Video.Renderer /= null then
-	 SDL_DestroyRenderer (Video.Renderer);
-      end if;
-
-      if Video.Window /= null then
-	 SDL_DestroyWindow (Video.Window);
-      end if;
-   end Finalize;
-
+   ---------------------------
+   --  Private Subprograms  --
+   ---------------------------
    procedure Load_Textures (Video : in out Video_Driver) is
       Surface : SDL_Surface;
    begin

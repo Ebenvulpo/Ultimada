@@ -1,11 +1,52 @@
 with SDL2; use SDL2;
 
 package body Filepath is
+   ----------------
+   --  Constants --
+   ----------------
    Windows : constant String := "Windows";
    Linux   : constant String := "Linux";
 
    Assets  : constant String := "assets";
 
+   ----------------------------------
+   --  Initialization Subprograms  --
+   ----------------------------------
+   procedure Deinitialize is
+   begin
+      if
+	App_Filepath  = C.Strings.Null_Ptr or
+	Platform_Name = C.Strings.Null_Ptr
+      then
+	 raise Program_Error;
+      end if;
+
+      Free (Platform_Name);
+      Free (App_Filepath);
+   end Deinitialize;
+
+   procedure Initialize is
+   begin
+      if
+	App_Filepath  /= C.Strings.Null_Ptr or
+	Platform_Name /= C.Strings.Null_Ptr
+      then
+	 raise Program_Error;
+      end if;
+
+      Platform_Name := SDL_GetPlatform;
+      App_Filepath  := SDL_GetBasePath;
+      if
+	Platform_Name = C.Strings.Null_ptr or
+	App_Filepath  = C.Strings.Null_Ptr
+      then
+	 raise Program_Error;
+      end if;
+   end Initialize;
+
+   ---------------------------------
+   --  Getting Files Subprograms  --
+   ---------------------------------
    function Get_BMP (Name : in String) return String is
       B : constant String := "bmps";
    begin
@@ -29,36 +70,4 @@ package body Filepath is
 	 return Value (App_Filepath) & Assets & "/" & W & "/" & Name;
       end if;
    end Get_WAV;
-
-   procedure Load_Filepath is
-   begin
-      if
-	App_Filepath  /= C.Strings.Null_Ptr or
-	Platform_Name /= C.Strings.Null_Ptr
-      then
-	 raise Program_Error;
-      end if;
-
-      Platform_Name := SDL_GetPlatform;
-      App_Filepath  := SDL_GetBasePath;
-      if
-	Platform_Name = C.Strings.Null_ptr or
-	App_Filepath  = C.Strings.Null_Ptr
-      then
-	 raise Program_Error;
-      end if;
-   end Load_Filepath;
-
-   procedure Free_Filepath is
-   begin
-      if
-	App_Filepath  = C.Strings.Null_Ptr or
-	Platform_Name = C.Strings.Null_Ptr
-      then
-	 raise Program_Error;
-      end if;
-
-      Free (Platform_Name);
-      Free (App_Filepath);
-   end Free_Filepath;
 end Filepath;

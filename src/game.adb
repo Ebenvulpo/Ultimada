@@ -6,13 +6,24 @@ with Interfaces.C; use Interfaces.C;
 package body Game is
    package C renames Interfaces.C;
 
-   procedure Start (Game : in out Game_Type) is
+   ----------------------------------
+   --  Initialization Subprograms  --
+   ----------------------------------
+   procedure Deinitialize (Game : in out Game_Type) is
    begin
-      Game.Human_Player.Create;
-      Game.Map.Create(2, 7, 2, 0.95);
-      Game.Objs.Create(9, 11, 0, 0.1);
-   end Start;
+      Game.Map.Deinitialize;
+   end Deinitialize;
 
+   procedure Initialize (Game : in out Game_Type) is
+   begin
+      Game.Human_Player.Initialize;
+      Game.Map.Initialize (2, 7, 2, 0.95);
+      Game.Objs.Initialize (9, 11, 0, 0.1);
+   end Initialize;
+
+   ------------------------
+   --  Game Subprograms  --
+   ------------------------
    procedure Change_Scale (Game : out Game_Type; dS : in  C.int) is
       s : C.int;
    begin
@@ -45,6 +56,9 @@ package body Game is
       end case;
    end Input;
 
+   ---------------------------
+   --  Private Subprograms  --
+   ---------------------------
    procedure Keyboard_Input (Game : in out Game_Type; Event : in SDL_Event) is
       Player_Location_X : Location_X;
       Player_Location_Y : Location_Y;
@@ -78,9 +92,4 @@ package body Game is
 	    Ada.Text_IO.Put_Line (Event.Key.Keysym.Scancode'Image);
       end case;
    end Keyboard_Input;
-
-   procedure Finalize (Game : in out Game_Type) is
-   begin
-      null;
-   end Finalize;
 end Game;

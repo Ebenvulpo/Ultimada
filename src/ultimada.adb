@@ -1,6 +1,6 @@
 with Ada.Text_IO;
 with Application;
-with Filepath;     use Filepath;
+with Filepath;
 with Interfaces.C; use Interfaces.C;
 with SDL2;         use SDL2;
 
@@ -14,18 +14,18 @@ begin
       raise Program_Error;
    end if;
 
-   Load_Filepath;
+   Filepath.Initialize;
 
    Ada.Text_IO.Put_Line ("Hello World Ultimada!");
    Ada.Text_IO.Put_Line ("Controls:");
    Ada.Text_IO.Put_Line ("WASD, Arross, -/+");
    Ada.Text_IO.New_Line;
 
-   Application.Init;
+   Application.Initialize;
    Application.Game_Loop;
-   Application.Deinit;
+   Application.Deinitialize;
 
-   Free_Filepath;
+   Filepath.Deinitialize;
 
    SDL_Quit;
 end Ultimada;

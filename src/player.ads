@@ -10,16 +10,22 @@ package Player is
    subtype Location_X is Map.Map_Width_Type;
    subtype Location_Y is Map.Map_Height_Type;
 
-   procedure Change_Location
-     (Player : out Player_Type;
-      X      : in  Location_X;
-      Y      : in  Location_Y);
-
-   procedure Create
+   ----------------------------------
+   --  Initialization Subprograms  --
+   ----------------------------------
+   procedure Initialize
      (Player : out Player_Type;
       Name   : in  String     := "Ebenvulpo";
       X      : in  Location_X := 0;
       Y      : in  Location_Y := 0);
+
+   --------------------------
+   --  Player Subprograms  --
+   --------------------------
+   procedure Change_Location
+     (Player : out Player_Type;
+      X      : in  Location_X;
+      Y      : in  Location_Y);
 
    procedure Get_Location
      (Player : in  Player_Type;

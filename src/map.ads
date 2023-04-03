@@ -1,22 +1,29 @@
-with Ada.Finalization;
-with Interfaces.C;     use Interfaces.C;
-with Tile;             use Tile;
-with Video;            use Video;
+with Interfaces.C; use Interfaces.C;
+with Tile;         use Tile;
+with Video;        use Video;
 
 package Map is
    package C renames Interfaces.C;
 
-   type Map_Type is new Ada.Finalization.Controlled with private;
+   type Map_Type is tagged private;
 
    subtype Map_Width_Type  is C.int range 0 .. 256;
    subtype Map_Height_Type is C.int range 0 .. 256;
 
-   procedure Create
+   ----------------------------------
+   --  Initialization Subprograms  --
+   ----------------------------------
+   procedure Deinitialize (Map : in out Map_Type);
+   procedure Initialize
      (Map          : in out Map_Type;
-      low_tile     : in Integer;
-      high_tile    : in Integer;
-      default_tile : in Integer;
-      spawn_rate   : in Float);
+      low_tile     : in     Integer;
+      high_tile    : in     Integer;
+      default_tile : in     Integer;
+      spawn_rate   : in     Float);
+
+   -----------------------
+   --  Map Subprograms  --
+   -----------------------
    procedure Render
      (Map      : in out Map_Type;
       Video    : in out Video_Driver;
@@ -29,10 +36,8 @@ private
 
    type Tile_Map_Access is access Tile_Map;
 
-   type Map_Type is new Ada.Finalization.Controlled with
+   type Map_Type is tagged
       record
 	 Tiles  : Tile_Map_Access := null;
       end record;
-
-   overriding procedure Finalize (Map : in out Map_Type);
 end Map;

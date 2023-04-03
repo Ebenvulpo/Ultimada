@@ -2,7 +2,9 @@ with Ada.Numerics.Discrete_Random;
 with Ada.Numerics.Float_Random;
 
 package body Rand is
-
+   ------------------------
+   --  Rand Subprograms  --
+   ------------------------
    function randomN(low: in Integer; high: in Integer) return Integer is
       subtype randRange is Integer range low..high;
       package R_Int is new Ada.Numerics.Discrete_Random(randRange);

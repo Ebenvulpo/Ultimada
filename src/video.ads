@@ -1,13 +1,19 @@
-with Ada.Finalization;
+with Ada.Strings.Bounded;
 with Interfaces.C;        use Interfaces.C;
 with SDL2;                use SDL2;
-with Ada.Strings.Bounded;
 
 package Video is
-   package SB is new Ada.Strings.Bounded.Generic_Bounded_Length (64);
+   type Video_Driver is tagged private;
 
-   type Video_Driver is new Ada.Finalization.Controlled with private;
+   ----------------------------------
+   --  Initialization Subprograms  --
+   ----------------------------------
+   procedure Deinitialize (Video : in out Video_Driver);
+   procedure Initialize   (Video : in out Video_Driver);
 
+   -------------------------
+   --  Video Subprograms  --
+   -------------------------
    procedure Start  (Video : in out Video_Driver);
    procedure Finish (Video : in out Video_Driver);
 
@@ -22,8 +28,6 @@ package Video is
       X, Y   : in     C.int;
       Number : in     Natural);
 
-   procedure Init (Video : in out Video_Driver);
-
    procedure Change_scale
      (Video   : in out Video_Driver;
       S       : in     C.int);
@@ -31,14 +35,14 @@ package Video is
 private
    type Texture_Array is array (Natural range <>) of SDL_Texture;
 
-   type Video_Driver is new Ada.Finalization.Controlled with
+   type Video_Driver is tagged
       record
 	 Window   : SDL_Window   := null;
 	 Renderer : SDL_Renderer := null;
 	 Textures : Texture_Array (0 .. 64) := (others => null);
       end record;
 
-   overriding procedure Finalize (Video : in out Video_Driver);
+   package SB is new Ada.Strings.Bounded.Generic_Bounded_Length (64);
 
    type Bitmap_Array_Type is array (Natural range <>) of SB.Bounded_String;
    Bitmap_Array : constant Bitmap_Array_Type :=

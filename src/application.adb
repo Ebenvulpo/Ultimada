@@ -1,6 +1,26 @@
 with SDL2; use SDL2;
 
 package body Application is
+   ----------------------------------
+   --  Initialization Subprograms  --
+   ----------------------------------
+   procedure Deinitialize is
+   begin
+      App.Audio.Deinitialize;
+      App.Video.Deinitialize;
+      App.Game.Deinitialize;
+   end Deinitialize;
+
+   procedure Initialize is
+   begin
+      App.Audio.Initialize;
+      App.Video.Initialize;
+      App.Game.Initialize;
+   end Initialize;
+
+   -------------------------------
+   --  Application Subprograms  --
+   -------------------------------
    function Get_Audio return Audio_Driver is
    begin
       return App.Audio;
@@ -10,19 +30,6 @@ package body Application is
    begin
       return App.Video;
    end Get_Video;
-
-   procedure Deinit is
-   begin
-      App.Audio.Deinit;
-      App.Finalize;
-   end Deinit;
-
-   procedure Init is
-   begin
-      App.Audio.Init;
-      App.Video.Init;
-      App.Game.Start;
-   end Init;
 
    procedure Game_Loop is
       Event : aliased SDL_Event;
@@ -41,15 +48,13 @@ package body Application is
       return;
    end Game_Loop;
 
+   ---------------------------
+   --  Private Subprograms  --
+   ---------------------------
    procedure Render is
    begin
       Start (App.Video);
       App.Game.Render (App.Video);
       Finish (App.Video);
    end Render;
-
-   procedure Finalize (App : in out App_Type) is
-   begin
-      null;
-   end Finalize;
 end Application;
