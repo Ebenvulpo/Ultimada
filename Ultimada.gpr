@@ -9,9 +9,9 @@ project Ultimada is
       for Default_Switches ("Ada") use ("-gnat2012", "-g", "-gnatwa", "-O2");
    end Compiler;
 
-   package Binding is
+   package Binder is
       for Default_Switches ("Ada") use ("-shared");
-   end Binding;
+   end Binder;
 
    package Linker is
       for Default_Switches ("Ada") use ("-lSDL2", "-lSDL2_mixer");
