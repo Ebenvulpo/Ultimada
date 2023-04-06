@@ -2,6 +2,21 @@ package Tile is
    type    Tile_Type    is tagged private;
    subtype Tile_ID_Type is Natural;
 
+   -----------------
+   --  Constants  --
+   -----------------
+   Floor_Dirt   : constant Tile_ID_Type := 0;
+   Floor_Grass  : constant Tile_ID_Type := 1;
+   Floor_Grass2 : constant Tile_ID_Type := 2;
+   Floor_Grass3 : constant Tile_ID_Type := 3;
+   Floor_Ice    : constant Tile_ID_Type := 4;
+   Floor_Lava   : constant Tile_ID_Type := 5;
+   Floor_Lava2  : constant Tile_ID_Type := 6;
+   Floor_Lava3  : constant Tile_ID_Type := 7;
+   Rock_Pink    : constant Tile_ID_Type := 8;
+   Tree         : constant Tile_ID_Type := 9;
+   Tree_Pink    : constant Tile_ID_Type := 10;
+
    ----------------------------------
    --  Initialization Subprograms  --
    ----------------------------------

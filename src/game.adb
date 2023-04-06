@@ -2,6 +2,8 @@ with Ada.Text_IO;
 with Application;
 with Audio;        use Audio;
 with Interfaces.C; use Interfaces.C;
+with Object;
+with Tile;
 
 package body Game is
    package C renames Interfaces.C;
@@ -12,13 +14,14 @@ package body Game is
    procedure Deinitialize (Game : in out Game_Type) is
    begin
       Game.Map.Deinitialize;
+      Game.Objs.Deinitialize;
    end Deinitialize;
 
    procedure Initialize (Game : in out Game_Type) is
    begin
       Game.Human_Player.Initialize;
-      Game.Map.Initialize (2, 7, 2, 0.95);
-      Game.Objs.Initialize (9, 11, 0, 0.1);
+      Game.Map.Initialize  (Tile.Floor_Dirt, Tile.Tree, Tile.Floor_Grass, 0.95);
+      Game.Objs.Initialize (Object.Item_Chest, Object.Item_Star2, 0.1);
    end Initialize;
 
    ------------------------
@@ -30,7 +33,7 @@ package body Game is
       s := Game.Logical_Size + dS;
       if  50 <= s and s <= 600 then
          Game.Logical_Size := Game.Logical_Size + dS;
-         Ada.Text_IO.Put_Line( "Logical Scale " & Game.Logical_Size'Image );
+         Ada.Text_IO.Put_Line("Logical Scale " & Game.Logical_Size'Image);
       end if;
    end Change_Scale;
 
@@ -50,7 +53,7 @@ package body Game is
       Game.Map.Render  (Video, -Player_Location_X + SOX, -Player_Location_Y + SOY, -8, -8);
       Game.Objs.Render (Video, -Player_Location_X + SOX, -Player_Location_Y + SOY, -8, -8);
 
-      Video.Draw_Tile (SOX, SOY, 14, -8, -8);
+      Video.Draw_Person_Tile (SOX, SOY, 0, -8, -8);
    end Render;
 
    procedure Input (Game : in out Game_Type; Event : in SDL_Event) is

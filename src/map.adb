@@ -1,4 +1,3 @@
-with Ada.Text_IO;
 with Rand;                   use Rand;
 with Unchecked_Deallocation;
 
@@ -58,7 +57,7 @@ package body Map is
    begin
       for Y in Map_Height_Type'Range loop
          for X in Map_Width_Type'Range loop
-            Video.Draw_Tile ((X + Offset_X), (Y + Offset_Y), Map.Tiles (Y)(X).Get_ID, Pixel_Offset_X, Pixel_Offset_Y);
+            Video.Draw_Map_Tile (X + Offset_X, Y + Offset_Y, Map.Tiles (Y)(X).Get_ID, Pixel_Offset_X, Pixel_Offset_Y);
          end loop;
       end loop;
    end Render;

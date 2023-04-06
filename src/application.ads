@@ -3,7 +3,7 @@ with Game;  use Game;
 with Video; use Video;
 
 package Application is
-   type App_Type is tagged private;
+   type App_Type is tagged limited private;
 
    ----------------------------------
    --  Initialization Subprograms  --
@@ -20,7 +20,7 @@ package Application is
    procedure Game_Loop;
 
 private
-   type App_Type is tagged
+   type App_Type is tagged limited
       record
 	 Audio : Audio_Driver;
 	 Video : Video_Driver;
