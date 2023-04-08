@@ -1,13 +1,10 @@
 with Ada.Text_IO;
 with Application;
 with Audio;        use Audio;
-with Interfaces.C; use Interfaces.C;
 with Object;
 with Tile;
 
 package body Game is
-   package C renames Interfaces.C;
-
    ----------------------------------
    --  Initialization Subprograms  --
    ----------------------------------
@@ -67,7 +64,11 @@ package body Game is
       end case;
    end Input;
 
-   procedure Move(Game : in out Game_Type; X : in C.int; Y : in C.int) is
+   procedure Move
+     (Game : in out Game_Type;
+      X    : in     C.int;
+      Y    : in     C.int)
+   is
       Map_Bound_X : constant C.int := Map_Width_Type'Last;
       Map_Bound_Y : constant C.int := Map_Height_Type'Last;
    begin

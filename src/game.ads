@@ -3,9 +3,11 @@ with Object_Map;   use Object_Map;
 with SDL2;         use SDL2;
 with Player;       use Player;
 with Video;        use Video;
-with Interfaces.C;
+with Interfaces.C; use Interfaces.C;
 
 package Game is
+   package C renames Interfaces.C;
+
    type Game_Type is tagged limited private;
 
    ----------------------------------
@@ -23,7 +25,10 @@ package Game is
 
    procedure Change_Scale (Game : out Game_Type; dS : in  Interfaces.C.int);
 
-   procedure Move(Game : in out Game_Type; X : Interfaces.C.int; Y : Interfaces.C.int);
+   procedure Move
+     (Game : in out Game_Type;
+      X    : in     C.int;
+      Y    : in     C.int);
 
 private
    type Player_Array is array (Natural range <>) of Player_Type;
