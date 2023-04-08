@@ -67,6 +67,18 @@ package body Game is
       end case;
    end Input;
 
+   procedure Move(Game : in out Game_Type; X : C.int; Y : C.int) is
+   begin
+      --  if Game.Map.Map_Width_Type'First <= X and X <= Game.Map.Map_Width_Type'Last
+      --     and Game.Map.Map_Height_Type'First <= Y and Y <= Game.Map.Map_Height_Type'Last
+      if 0 <= X and X <= 256 and 0 <= Y and Y <= 256
+         then
+            Game.Human_Player.Change_Location (X, Y);
+      end if;
+      Ada.Text_IO.Put_Line ( X'Image );
+      Ada.Text_IO.Put_Line ( Y'Image );
+   end Move;
+
    ---------------------------
    --  Private Subprograms  --
    ---------------------------
@@ -85,7 +97,8 @@ package body Game is
 	 when 4 | 80 => --97, a
 	    Ada.Text_IO.Put_Line ("Left");
 	    Audio.Play_Sound (17);
-	    Game.Human_Player.Change_Location (Player_Location_X - 1, Player_Location_Y);
+	    Move(Game, Player_Location_X - 1, Player_Location_Y);
+	   --   Game.Human_Player.Change_Location (Player_Location_X - 1, Player_Location_Y);
 	 when 22 | 81 => --115, s
 	    Ada.Text_IO.Put_Line ("Down");
 	    Audio.Play_Sound (17);

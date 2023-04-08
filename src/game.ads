@@ -23,6 +23,8 @@ package Game is
 
    procedure Change_Scale (Game : out Game_Type; dS : in  Interfaces.C.int);
 
+   procedure Move(Game : in out Game_Type; X : Interfaces.C.int; Y : Interfaces.C.int);
+
 private
    type Player_Array is array (Natural range <>) of Player_Type;
 

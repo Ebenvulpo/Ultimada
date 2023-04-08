@@ -12,7 +12,7 @@ package body Player is
       Player.Name (Name'First .. Name'Last) := Name;
       Player.X := X;
       Player.Y := Y;
-   end Initialize;   
+   end Initialize;
 
    --------------------------
    --  Player Subprograms  --
@@ -23,10 +23,8 @@ package body Player is
       Y      : in  Location_Y)
    is
    begin
-      --  if 0 <= X and 0 <= Y then
       Player.X := X;
       Player.Y := Y;
-      --  end if;
    end Change_Location;
 
    procedure Get_Location
