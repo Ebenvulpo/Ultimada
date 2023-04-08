@@ -25,7 +25,8 @@ package Tile is
    ------------------------
    --  Tile Subprograms  --
    ------------------------
-   function Get_ID (Tile : in Tile_Type) return Tile_ID_Type;
+   function Get_ID      (Tile : in Tile_Type) return Tile_ID_Type;
+   function Is_Walkable (Tile : in Tile_Type) return Boolean;
 
 private
    type Tile_Type is tagged

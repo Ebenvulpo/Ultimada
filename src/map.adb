@@ -46,6 +46,16 @@ package body Map is
    -----------------------
    --  Map Subprograms  --
    -----------------------
+   function Get_Tile
+     (Map : in out Map_Type;
+      X   : in     Map_Width_Type;
+      Y   : in     Map_Height_Type)
+     return Tile_Type
+   is
+   begin
+      return Map.Tiles (Y)(X);
+   end Get_Tile;
+
    procedure Render
      (Map            : in out Map_Type;
       Video          : in out Video_Driver;

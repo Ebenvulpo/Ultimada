@@ -24,6 +24,12 @@ package Map is
    -----------------------
    --  Map Subprograms  --
    -----------------------
+   function Get_Tile
+     (Map : in out Map_Type;
+      X   : in     Map_Width_Type;
+      Y   : in     Map_Width_Type)
+     return Tile_Type;
+
    procedure Render
      (Map            : in out Map_Type;
       Video          : in out Video_Driver;

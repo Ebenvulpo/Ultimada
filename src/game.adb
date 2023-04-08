@@ -67,16 +67,20 @@ package body Game is
       end case;
    end Input;
 
-   procedure Move(Game : in out Game_Type; X : C.int; Y : C.int) is
+   procedure Move(Game : in out Game_Type; X : in C.int; Y : in C.int) is
+      Map_Bound_X : constant C.int := Map_Width_Type'Last;
+      Map_Bound_Y : constant C.int := Map_Height_Type'Last;
    begin
-      --  if Game.Map.Map_Width_Type'First <= X and X <= Game.Map.Map_Width_Type'Last
-      --     and Game.Map.Map_Height_Type'First <= Y and Y <= Game.Map.Map_Height_Type'Last
-      if 0 <= X and X <= 256 and 0 <= Y and Y <= 256
-         then
-            Game.Human_Player.Change_Location (X, Y);
+      if
+	0 <= X and X <= Map_Bound_X and
+	0 <= Y and Y <= Map_Bound_Y
+      then
+	 if Game.Map.Get_Tile (X, Y).Is_Walkable then
+	    Game.Human_Player.Change_Location (X, Y);
+	 end if;
       end if;
-      Ada.Text_IO.Put_Line ( X'Image );
-      Ada.Text_IO.Put_Line ( Y'Image );
+      Ada.Text_IO.Put_Line (X'Image);
+      Ada.Text_IO.Put_Line (Y'Image);
    end Move;
 
    ---------------------------
@@ -93,20 +97,19 @@ package body Game is
 	 when 26 | 82 => --119, w
 	    Ada.Text_IO.Put_Line ("Up");
 	    Audio.Play_Sound (17);
-	    Game.Human_Player.Change_Location (Player_Location_X, Player_Location_Y - 1);
+	    Game.Move (Player_Location_X, Player_Location_Y - 1);
 	 when 4 | 80 => --97, a
 	    Ada.Text_IO.Put_Line ("Left");
 	    Audio.Play_Sound (17);
-	    Move(Game, Player_Location_X - 1, Player_Location_Y);
-	   --   Game.Human_Player.Change_Location (Player_Location_X - 1, Player_Location_Y);
+	    Game.Move(Player_Location_X - 1, Player_Location_Y);
 	 when 22 | 81 => --115, s
 	    Ada.Text_IO.Put_Line ("Down");
 	    Audio.Play_Sound (17);
-	    Game.Human_Player.Change_Location (Player_Location_X, Player_Location_Y + 1);
+	    Game.Move (Player_Location_X, Player_Location_Y + 1);
 	 when 7 | 79 => --100, d
 	    Ada.Text_IO.Put_Line ("Right");
 	    Audio.Play_Sound (17);
-	    Game.Human_Player.Change_Location (Player_Location_X + 1, Player_Location_Y);
+	    Game.Move (Player_Location_X + 1, Player_Location_Y);
 	 when 45 => -- "-"
 	    Game.Change_Scale(32);
 	 when 46 => -- "+"
