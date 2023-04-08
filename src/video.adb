@@ -238,7 +238,8 @@ package body Video is
 	    Name : constant String := SB.To_String (Tile_BMP_Array (I).Name);
 	 begin
 	    Ada.Text_IO.Put_Line (Name);
-	    Surface := SDL_LoadBMP (Filepath.Get_BMP (Name));
+	   --   Surface := SDL_LoadBMP (Filepath.Get_BMP (Name));
+	    Surface := SDL_LoadBMP (Filepath.Get_FilePath (Name, "bmps"));
 	 end;
 	 SDL_SetColorKey (Surface, 1, 16#FF00CC#);
 

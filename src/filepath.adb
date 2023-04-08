@@ -59,6 +59,15 @@ package body Filepath is
       end if;
    end Get_BMP;
 
+   function Get_FilePath (Name : in String; T : in String) return String is
+      Slash : String := "/";
+   begin
+      if Value (Platform_Name) = Windows then
+         Slash := "\";
+      end if;
+      return Value (App_Filepath) & Assets & Slash & T & Slash & Name;
+   end Get_FilePath;
+
    function Get_WAV (Name : in String) return String is
       W : constant String := "wavs";
    begin

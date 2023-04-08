@@ -13,6 +13,7 @@ package Filepath is
    --  Getting Files Subprograms  --
    ---------------------------------
    function Get_BMP (Name : in String) return String;
+   function Get_FilePath (Name : in String; T : in String) return String;
    function Get_WAV (Name : in String) return String;
 
 private

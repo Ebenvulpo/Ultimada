@@ -18,3 +18,8 @@ gprbuild Ultimada.gpr
 ```
 ./bin/ultimada
 ```
+
+## Build and Run
+```
+sh ultimada.sh
+```
