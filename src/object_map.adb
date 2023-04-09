@@ -44,6 +44,16 @@ package body Object_Map is
       Object_Map.Objects (Y)(X).Initialize (Item);
    end Change_Object;
 
+   function Get_Item
+     (Object_Map : in Object_Map_Type;
+      X          : in Object_Map_Width;
+      Y          : in Object_Map_Height)
+     return Object.Item_Type
+   is
+   begin
+      return Object_Map.Objects (Y)(X).Get_Type;
+   end Get_Item;
+
    procedure Render
      (Object_Map     : in out Object_Map_Type;
       Video          : in out Video_Driver;

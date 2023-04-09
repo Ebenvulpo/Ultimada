@@ -25,6 +25,12 @@ package Object_Map is
       Item       : in     Object.Item_Type;
       X          : in     Object_Map_Width;
       Y          : in     Object_Map_Height);
+   
+   function Get_Item
+     (Object_Map : in Object_Map_Type;
+      X          : in Object_Map_Width;
+      Y          : in Object_Map_Height)
+     return Object.Item_Type;
 
    procedure Render
      (Object_Map     : in out Object_Map_Type;

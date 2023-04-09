@@ -92,6 +92,10 @@ package body Game is
       then
 	 if Game.Map.Get_Tile (X, Y).Is_Walkable then
 	    Game.Human_Player.Change_Location (X, Y);
+
+	    if Game.Objs.Get_Item (X, Y) /= Object.Item_None then
+	       Game.Objs.Change_Object (Object.Item_None, X, Y);
+	    end if;
 	 end if;
       end if;
       Ada.Text_IO.Put_Line (X'Image);
