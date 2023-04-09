@@ -17,14 +17,7 @@ package body Object_Map is
       end if;
    end Deinitialize;
 
-   procedure Initialize
-     (Object_Map   : in out Object_Map_Type;
-      Low_Tile     : in     Integer;
-      High_Tile    : in     Integer;
-      Spawn_Rate   : in     Float)
-   is
-      R : Integer;
-      F : Float;
+   procedure Initialize (Object_Map : in out Object_Map_Type) is
    begin
       if Object_Map.Objects /= null then
 	 raise Program_Error;
@@ -32,16 +25,9 @@ package body Object_Map is
 
       Object_Map.Objects := new Object_Map_Y;
 
-      for Y in Object_Map_Height'Range loop
-	 for X in Object_Map_Width'Range loop
-	    F := randomF;
-
-	    R := Object.Item_None;
-	    if F < Spawn_Rate then
-	       R := randomN (Low_Tile, High_Tile);
-	    end if;
-
-	    Object_Map.Objects (Y)(X).Initialize (R);
+      for Y in Object_Map.Objects'Range loop
+	 for X in Object_Map.Objects (Y)'Range loop
+	    Object_Map.Objects (Y)(X).Initialize (Object.Item_None);
 	 end loop;
       end loop;
    end Initialize;
@@ -49,6 +35,16 @@ package body Object_Map is
    ------------------------------
    --  Object_Map Subprograms  --
    ------------------------------
+   procedure Change_Object
+     (Object_Map : in out Object_Map_Type;
+      Item       : in     Object.Item_Type;
+      X          : in     Object_Map_Width;
+      Y          : in     Object_Map_Height)
+   is
+   begin
+      Object_Map.Objects (Y)(X).Initialize (Item);
+   end Change_Object;
+
    procedure Render
      (Object_Map     : in out Object_Map_Type;
       Video          : in out Video_Driver;

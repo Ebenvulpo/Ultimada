@@ -39,7 +39,7 @@ package Map is
       Pixel_Offset_Y : in     C.int);
 
 private
-   type Tile_Row is array (C.int range 0 .. Map_Width_Type'Last) of Tile_Type;
+   type Tile_Row is array (C.int range 0 .. Map_Width_Type'Last)  of Tile_Type;
    type Tile_Map is array (C.int range 0 .. Map_Height_Type'Last) of Tile_Row;
 
    type Tile_Map_Access is access Tile_Map;
@@ -48,4 +48,11 @@ private
       record
 	 Tiles  : Tile_Map_Access := null;
       end record;
+   
+   procedure Generate_Grass      (Map : in out Map_Type);
+   procedure Generate_Forests    (Map : in out Map_Type);
+   procedure Generate_Lava_Pools (Map : in out Map_Type);
+   procedure Generate_Poles      (Map : in out Map_Type);
+
+   procedure Trees (Map : in out Map_Type);
 end Map;

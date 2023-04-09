@@ -1,3 +1,5 @@
+with Tile;
+
 package Object is
    type Object_Type is tagged limited private;
 
@@ -28,6 +30,8 @@ package Object is
    --  Object Subprograms  --
    --------------------------
    function Get_Type (Object : in Object_Type) return Item_Type;
+
+   function Is_Placeable (T : in Tile.Tile_ID_Type) return Boolean;
 
 private
    type Object_Type is tagged limited

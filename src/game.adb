@@ -1,7 +1,8 @@
 with Ada.Text_IO;
 with Application;
-with Audio;        use Audio;
+with Audio;       use Audio;
 with Object;
+with Rand;
 with Tile;
 
 package body Game is
@@ -15,10 +16,23 @@ package body Game is
    end Deinitialize;
 
    procedure Initialize (Game : in out Game_Type) is
+      Location_X : Player.Location_X;
+      Location_Y : Player.Location_Y;
    begin
-      Game.Human_Player.Initialize;
-      Game.Map.Initialize  (Tile.Floor_Dirt, Tile.Tree, Tile.Floor_Grass, 0.95);
-      Game.Objs.Initialize (Object.Item_Chest, Object.Item_Star2, 0.1);
+      Game.Map.Initialize (Tile.Floor_Dirt, Tile.Tree, Tile.Floor_Grass, 0.95);
+      Game.Objs.Initialize;
+      Game.Generate_Objects (0.01);
+      --  Randomly place the player somewhere in the world.
+      loop
+	 Location_X := Player.Location_X (Rand.RandomN (0, 256));
+	 Location_Y := Player.Location_Y (Rand.RandomN (0, 256));
+
+	 if Game.Map.Get_Tile (Location_X, Location_Y).Is_Walkable then
+	    Game.Human_Player.Initialize (X => Location_X, Y => Location_Y);
+	    goto End_Loop;
+	 end if;
+      end loop;
+  <<End_Loop>>
    end Initialize;
 
    ------------------------
@@ -87,6 +101,29 @@ package body Game is
    ---------------------------
    --  Private Subprograms  --
    ---------------------------
+   procedure Generate_Objects
+     (Game       : in out Game_Type;
+      Spawn_Rate : in     Float)
+   is
+      R : Integer;
+      F : Float;
+   begin
+      for Y in Map.Map_Height_Type range 0 .. Map.Map_Height_Type'Last loop
+	 for X in Map.Map_Width_Type range 0 .. Map.Map_Width_Type'Last loop
+	    F := Rand.randomF;
+
+	    R := Object.Item_None;
+	    if F < Spawn_Rate then
+	       R := Rand.randomN (Object.Item_Chest, Object.Item_Star2);
+	    end if;
+
+	    if Object.Is_Placeable (Game.Map.Get_Tile (X, Y).Get_ID) then
+	       Game.Objs.Change_Object (R, X, Y);
+	    end if;
+	 end loop;
+      end loop;
+   end Generate_Objects;
+
    procedure Keyboard_Input (Game : in out Game_Type; Event : in SDL_Event) is
       Player_Location_X : Location_X;
       Player_Location_Y : Location_Y;

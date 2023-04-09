@@ -20,12 +20,15 @@ package Tile is
    ----------------------------------
    --  Initialization Subprograms  --
    ----------------------------------
-   procedure Initialize (Tile: out Tile_Type; ID : in Tile_ID_Type := 0);
+   procedure Initialize
+     (Tile: out Tile_Type;
+      ID  : in  Tile_ID_Type := Floor_Dirt);
 
    ------------------------
    --  Tile Subprograms  --
    ------------------------
    function Get_ID      (Tile : in Tile_Type) return Tile_ID_Type;
+   function Get_Height  (Tile : in Tile_Type) return Integer;
    function Is_Walkable (Tile : in Tile_Type) return Boolean;
 
 private

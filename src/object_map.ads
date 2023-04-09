@@ -15,15 +15,17 @@ package Object_Map is
    --  Initialization Subprograms  --
    ----------------------------------
    procedure Deinitialize (Object_Map : in out Object_Map_Type);
-   procedure Initialize
-     (Object_Map   : in out Object_Map_Type;
-      Low_Tile     : in     Integer;
-      High_Tile    : in     Integer;
-      Spawn_Rate   : in     Float);
+   procedure Initialize   (Object_Map : in out Object_Map_Type);
 
    ------------------------------
    --  Object_Map Subprograms  --
    ------------------------------
+   procedure Change_Object
+     (Object_Map : in out Object_Map_Type;
+      Item       : in     Object.Item_Type;
+      X          : in     Object_Map_Width;
+      Y          : in     Object_Map_Height);
+
    procedure Render
      (Object_Map     : in out Object_Map_Type;
       Video          : in out Video_Driver;

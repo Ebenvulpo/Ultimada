@@ -42,5 +42,9 @@ private
          Logical_Size : Interfaces.C.int := 256;
       end record;
 
+   procedure Generate_Objects
+     (Game       : in out Game_Type;
+      Spawn_Rate : in     Float);
+
    procedure Keyboard_Input (Game : in out Game_Type; Event : in SDL_Event);
 end Game;
