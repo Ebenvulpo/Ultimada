@@ -2,7 +2,10 @@ package Rand is
    ------------------------
    --  Rand Subprograms  --
    ------------------------
-   function randomN(low: in Integer; high: in Integer) return Integer;
-   function noise2D(low: in Integer; high: in Integer) return Integer;
-   function randomF return Float;
+   function RandomN
+     (Low  : in Integer;
+      High : in Integer)
+     return Integer;
+
+   function RandomF return Float;
 end Rand;

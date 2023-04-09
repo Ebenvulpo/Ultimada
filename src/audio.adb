@@ -65,7 +65,7 @@ package body Audio is
 	 Ada.Text_IO.Put      ("Loading: ");
 	 Ada.Text_IO.Put_Line (SB.To_String (WAV_Files_Array (I)));
 
-	 Chunk := Mix_LoadWAV (Filepath.Get_FilePath (SB.To_String (WAV_Files_Array (I)), "wavs"));
+	 Chunk := Mix_LoadWAV (Filepath.Get (SB.To_String (WAV_Files_Array (I)), "wavs"));
 	 if Chunk = null then
 	    raise Program_Error;
 	 end if;

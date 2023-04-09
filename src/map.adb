@@ -1,4 +1,4 @@
-with Rand;                   use Rand;
+with Rand;
 with Unchecked_Deallocation;
 
 package body Map is

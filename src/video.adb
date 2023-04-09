@@ -188,7 +188,7 @@ package body Video is
 	    Name : constant String := SB.To_String (Object_BMP_Array (I).Name);
 	 begin
 	    Ada.Text_IO.Put_Line (Name);
-	    Surface := SDL_LoadBMP (Filepath.Get_BMP (Name));
+	    Surface := SDL_LoadBMP (Filepath.Get (Name, "bmps"));
 	 end;
 	 SDL_SetColorKey (Surface, 1, 16#FF00CC#);
 
@@ -213,7 +213,7 @@ package body Video is
 	    Name : constant String := SB.To_String (Person_BMP_Array (I).Name);
 	 begin
 	    Ada.Text_IO.Put_Line (Name);
-	    Surface := SDL_LoadBMP (Filepath.Get_BMP (Name));
+	    Surface := SDL_LoadBMP (Filepath.Get (Name, "bmps"));
 	 end;
 	 SDL_SetColorKey (Surface, 1, 16#FF00CC#);
 
@@ -239,7 +239,7 @@ package body Video is
 	 begin
 	    Ada.Text_IO.Put_Line (Name);
 	   --   Surface := SDL_LoadBMP (Filepath.Get_BMP (Name));
-	    Surface := SDL_LoadBMP (Filepath.Get_FilePath (Name, "bmps"));
+	    Surface := SDL_LoadBMP (Filepath.Get (Name, "bmps"));
 	 end;
 	 SDL_SetColorKey (Surface, 1, 16#FF00CC#);
 

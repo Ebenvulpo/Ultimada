@@ -1,5 +1,4 @@
 with Unchecked_Deallocation;
-with Rand;                   use Rand;
 
 package body Object_Map is
    -------------------------------------

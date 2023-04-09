@@ -5,7 +5,6 @@ package body Filepath is
    --  Constants --
    ----------------
    Windows : constant String := "Windows";
-   Linux   : constant String := "Linux";
 
    Assets  : constant String := "assets";
 
@@ -47,36 +46,16 @@ package body Filepath is
    ---------------------------------
    --  Getting Files Subprograms  --
    ---------------------------------
-   function Get_BMP (Name : in String) return String is
-      B : constant String := "bmps";
-   begin
-      if Value (Platform_Name) = Windows then
-	 return Value (App_Filepath) & Assets & "\" & B & "\" & Name;
-      elsif Value (Platform_Name) = Linux then
-	 return Value (App_Filepath) & Assets & "/" & B & "/" & Name;
-      else --  Assuming another Unix style system.
-	 return Value (App_Filepath) & Assets & "/" & B & "/" & Name;
-      end if;
-   end Get_BMP;
-
-   function Get_FilePath (Name : in String; T : in String) return String is
+   function Get
+     (Name : in String;
+      T    : in String)
+     return String
+   is
       Slash : String := "/";
    begin
       if Value (Platform_Name) = Windows then
          Slash := "\";
       end if;
       return Value (App_Filepath) & Assets & Slash & T & Slash & Name;
-   end Get_FilePath;
-
-   function Get_WAV (Name : in String) return String is
-      W : constant String := "wavs";
-   begin
-      if Value (Platform_Name) = Windows then
-	 return Value (App_Filepath) & Assets & "\" & W & "\" & Name;
-      elsif Value (Platform_Name) = Linux then
-	 return Value (App_Filepath) & Assets & "/" & W & "/" & Name;
-      else  --  Assuming another Unix style system.
-	 return Value (App_Filepath) & Assets & "/" & W & "/" & Name;
-      end if;
-   end Get_WAV;
+   end Get;
 end Filepath;
