@@ -5,11 +5,13 @@ package body Player is
    procedure Initialize
      (Player : out Player_Type;
       Name   : in  String := "Ebenvulpo";
+      ID     : in  Person.Person_Type;
       X      : in  Location_X := 0;
       Y      : in  Location_Y := 0)
    is
    begin
       Player.Name (Name'First .. Name'Last) := Name;
+      Player.ID := ID;
       Player.X := X;
       Player.Y := Y;
    end Initialize;
@@ -26,6 +28,11 @@ package body Player is
       Player.X := X;
       Player.Y := Y;
    end Change_Location;
+   
+   function Get_ID (Player : in Player_Type) return Person.Person_Type is
+   begin
+      return Player.ID;
+   end Get_ID;
 
    procedure Get_Location
      (Player : in  Player_Type;

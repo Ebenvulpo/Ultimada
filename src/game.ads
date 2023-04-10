@@ -25,11 +25,6 @@ package Game is
 
    procedure Change_Scale (Game : out Game_Type; dS : in  Interfaces.C.int);
 
-   procedure Move
-     (Game : in out Game_Type;
-      X    : in     C.int;
-      Y    : in     C.int);
-
 private
    type Player_Array is array (Natural range <>) of Player_Type;
 
@@ -42,9 +37,19 @@ private
          Logical_Size : Interfaces.C.int := 256;
       end record;
 
+   procedure AI_Do_Move (G : in out Game_Type);
+
    procedure Generate_Objects
      (Game       : in out Game_Type;
       Spawn_Rate : in     Float);
+   
+   procedure Initialize_AI_Players (Game : in out Game_Type);
 
    procedure Keyboard_Input (Game : in out Game_Type; Event : in SDL_Event);
+
+   procedure Move
+     (Game   : in out Game_Type;
+      Player : in out Player_Type;
+      X      : in     C.int;
+      Y      : in     C.int);
 end Game;

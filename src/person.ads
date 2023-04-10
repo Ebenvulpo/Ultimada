@@ -12,4 +12,6 @@ package Person is
    Slime1         : constant Person_Type := 3;
    Slime2         : constant Person_Type := 4;
    Zombie_Pink    : constant Person_Type := 5;
+
+   Person_None    : constant Person_Type := 128;
 end Person;

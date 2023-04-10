@@ -144,6 +144,10 @@ package body Video is
       Rect  : aliased SDL_Rect;
       Error :         C.int;
    begin
+      if Number = Person.Person_None then
+	 return;
+      end if;
+
       Rect.X := (X * 16) + Pixel_Offset_X;
       Rect.Y := (Y * 16) + Pixel_Offset_Y;
       Rect.W := 16;
