@@ -102,11 +102,11 @@ package body Game is
       use Float_Functions;
 
       Distance : Float;
-      H_X      : Player.Location_X;
-      H_Y      : Player.Location_Y;
-      P_X      : Player.Location_X;
-      P_Y      : Player.Location_Y;
-      
+      H_X      : Player.Location_X'Base;
+      H_Y      : Player.Location_Y'Base;
+      P_X      : Player.Location_X'Base;
+      P_Y      : Player.Location_Y'Base;
+
       A : Audio_Driver;
    begin
       A := Application.Get_Audio;
@@ -126,19 +126,23 @@ package body Game is
 
 	 Distance := Sqrt (Float ((P_X - H_X)**2 + (P_Y - H_Y)**2));
 
+	 --  If the AI "sees" the human player.
 	 if Distance <= 10.0 then
-	    if H_X > P_X then
+	    if H_X > P_X and G.Map.Is_Tile_Walkable (P_X + 1, P_Y) then
 	       A.Play_Sound (9);
 	       G.Move (G.Players (I), P_X + 1, P_Y);
-	    elsif H_X < P_X then
+	    elsif H_X < P_X and G.Map.Is_Tile_Walkable (P_X - 1, P_Y) then
 	       A.Play_Sound (9);
 	       G.Move (G.Players (I), P_X - 1, P_Y);
-	    elsif H_Y > P_Y then
+	    elsif H_Y > P_Y and G.Map.Is_Tile_Walkable (P_X, P_Y + 1) then
 	       A.Play_Sound (9);
 	       G.Move (G.Players (I), P_X, P_Y + 1);
-	    else
+	    elsif G.Map.Is_Tile_Walkable (P_X, P_Y - 1) then
 	       A.Play_Sound (9);
 	       G.Move (G.Players (I), P_X, P_Y - 1);
+	    else
+	       --  Make noise out of frustration.
+	       A.Play_Sound (9);
 	    end if;
 	 end if;
      <<End_Of_Loop>>

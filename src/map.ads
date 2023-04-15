@@ -29,6 +29,12 @@ package Map is
       X   : in     Map_Width_Type;
       Y   : in     Map_Width_Type)
      return Tile_Type;
+   
+   function Is_Tile_Walkable
+     (Map : in out Map_Type;
+      X   : in     Map_Width_Type'Base;
+      Y   : in     Map_Height_Type'Base)
+     return Boolean;
 
    procedure Render
      (Map            : in out Map_Type;

@@ -155,6 +155,24 @@ package body Map is
       return Map.Tiles (Y)(X);
    end Get_Tile;
 
+   function Is_Tile_Walkable
+     (Map : in out Map_Type;
+      X   : in     Map_Width_Type'Base;
+      Y   : in     Map_Height_Type'Base)
+     return Boolean
+   is
+   begin
+      if X < 0 or X > Map_Width_Type'Last then
+	 return False;
+      end if;
+
+      if Y < 0 or Y > Map_Height_Type'Last then
+	 return False;
+      end if;
+
+      return Map.Get_Tile (X, Y).Is_Walkable;
+   end Is_Tile_Walkable;
+
    procedure Render
      (Map            : in out Map_Type;
       Video          : in out Video_Driver;
