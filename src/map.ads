@@ -27,7 +27,7 @@ package Map is
    function Get_Tile
      (Map : in out Map_Type;
       X   : in     Map_Width_Type;
-      Y   : in     Map_Width_Type)
+      Y   : in     Map_Height_Type)
      return Tile_Type;
    
    function Is_Tile_Walkable
