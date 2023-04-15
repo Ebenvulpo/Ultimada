@@ -177,6 +177,9 @@ package SDL2 is
       Loops   : in C.int)
      return C.int;
 
+   function Mix_Playing (Channel : in C.int) return C.int with
+     Import => True, Convention => C, External_Name => "Mix_Playing";
+
    procedure Mix_FreeChunk (Chunk : in Mix_Chunk) with
      Import => True, Convention => C, External_Name => "Mix_FreeChunk";
 

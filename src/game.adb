@@ -129,20 +129,20 @@ package body Game is
 	 --  If the AI "sees" the human player.
 	 if Distance <= 10.0 then
 	    if H_X > P_X and G.Map.Is_Tile_Walkable (P_X + 1, P_Y) then
-	       A.Play_Sound (9);
+	       A.Play_Sound (Monster_Sound);
 	       G.Move (G.Players (I), P_X + 1, P_Y);
 	    elsif H_X < P_X and G.Map.Is_Tile_Walkable (P_X - 1, P_Y) then
-	       A.Play_Sound (9);
+	       A.Play_Sound (Monster_Sound);
 	       G.Move (G.Players (I), P_X - 1, P_Y);
 	    elsif H_Y > P_Y and G.Map.Is_Tile_Walkable (P_X, P_Y + 1) then
-	       A.Play_Sound (9);
+	       A.Play_Sound (Monster_Sound);
 	       G.Move (G.Players (I), P_X, P_Y + 1);
 	    elsif G.Map.Is_Tile_Walkable (P_X, P_Y - 1) then
-	       A.Play_Sound (9);
+	       A.Play_Sound (Monster_Sound);
 	       G.Move (G.Players (I), P_X, P_Y - 1);
 	    else
 	       --  Make noise out of frustration.
-	       A.Play_Sound (9);
+	       A.Play_Sound (Monster_Sound);
 	    end if;
 	 end if;
      <<End_Of_Loop>>
@@ -208,22 +208,22 @@ package body Game is
 	 --  wasd, arrows (uldr)
 	 when 26 | 82 => --119, w
 	    Ada.Text_IO.Put_Line ("Up");
-	    Audio.Play_Sound (17);
+	    Audio.Play_Background_Sound (Wind_Sound);
 	    Game.Move (Game.Human_Player, Player_Location_X, Player_Location_Y - 1);
 	    Game.AI_Do_Move;
 	 when 4 | 80 => --97, a
 	    Ada.Text_IO.Put_Line ("Left");
-	    Audio.Play_Sound (17);
+	    Audio.Play_Background_Sound (Wind_Sound);
 	    Game.Move (Game.Human_Player, Player_Location_X - 1, Player_Location_Y);
 	    Game.AI_Do_Move;
 	 when 22 | 81 => --115, s
 	    Ada.Text_IO.Put_Line ("Down");
-	    Audio.Play_Sound (17);
+	    Audio.Play_Background_Sound (Wind_Sound);
 	    Game.Move (Game.Human_Player, Player_Location_X, Player_Location_Y + 1);
 	    Game.AI_Do_Move;
 	 when 7 | 79 => --100, d
 	    Ada.Text_IO.Put_Line ("Right");
-	    Audio.Play_Sound (17);
+	    Audio.Play_Background_Sound (Wind_Sound);
 	    Game.Move (Game.Human_Player, Player_Location_X + 1, Player_Location_Y);
 	    Game.AI_Do_Move;
 	 when 45 => -- "-"
