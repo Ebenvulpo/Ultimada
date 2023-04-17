@@ -44,30 +44,33 @@ package body Game is
    ------------------------
    --  Game Subprograms  --
    ------------------------
-   procedure Change_Scale (Game : out Game_Type; dS : in  C.int) is
-      s : C.int;
+   procedure Change_Scale
+     (Game : out Game_Type;
+      dS   : in  Integer)
+   is
+      S : Integer;
    begin
-      s := Game.Logical_Size + dS;
-      if  50 <= s and s <= 600 then
+      S := Game.Logical_Size + dS;
+      if  50 <= S and S <= 600 then
          Game.Logical_Size := Game.Logical_Size + dS;
          Ada.Text_IO.Put_Line("Logical Scale " & Game.Logical_Size'Image);
       end if;
    end Change_Scale;
 
    procedure Render (Game : in out Game_Type; Video : in out Video_Driver) is
-      H_X : C.int;
-      H_Y : C.int;
-      P_X : C.int;
-      P_Y : C.int;
-      SOX : C.int;
-      SOY : C.int;
+      H_X : Sint32;
+      H_Y : Sint32;
+      P_X : Sint32;
+      P_Y : Sint32;
+      SOX : Sint32;
+      SOY : Sint32;
    begin
       Game.Human_Player.Get_Location (H_X, H_Y);
 
       Video.Change_Scale(Game.Logical_Size);
 
-      SOX := (Game.Logical_Size / 16) / 2;
-      SOY := (Game.Logical_Size / 16) / 2;
+      SOX := (Sint32 (Game.Logical_Size) / 16) / 2;
+      SOY := (Sint32 (Game.Logical_Size) / 16) / 2;
 
       Game.Map.Render  (Video, -H_X + SOX, -H_Y + SOY, -8, -8);
       Game.Objs.Render (Video, -H_X + SOX, -H_Y + SOY, -8, -8);
@@ -239,11 +242,11 @@ package body Game is
    procedure Move
      (Game   : in out Game_Type;
       Player : in out Player_Type;
-      X      : in     C.int;
-      Y      : in     C.int)
+      X      : in     Sint32;
+      Y      : in     Sint32)
    is
-      Map_Bound_X : constant C.int := Map_Width_Type'Last;
-      Map_Bound_Y : constant C.int := Map_Height_Type'Last;
+      Map_Bound_X : constant Sint32 := Map_Width_Type'Last;
+      Map_Bound_Y : constant Sint32 := Map_Height_Type'Last;
    begin
       if
 	0 <= X and X <= Map_Bound_X and

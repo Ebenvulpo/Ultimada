@@ -1,9 +1,9 @@
 with Ada.Text_IO;
 with Filepath;
+with SDL2_Rect;
+with SDL2_Surface;
 
 package body Video is
-   package C renames Interfaces.C;
-
    ----------------------------------
    --  Initialization Subprograms  --
    ----------------------------------
@@ -11,38 +11,37 @@ package body Video is
    begin
       for I in Video.Object_Textures'Range loop
 	 if Video.Object_Textures (I) /= null then
-	    SDL_DestroyTexture (Video.Object_Textures (I));
+	    SDL2_Render.Destroy_Texture (Video.Object_Textures (I));
 	 end if;
       end loop;
 
       for I in Video.Person_Textures'Range loop
 	 if Video.Person_Textures (I) /= null then
-	    SDL_DestroyTexture (Video.Person_Textures (I));
+	    SDL2_Render.Destroy_Texture (Video.Person_Textures (I));
 	 end if;
       end loop;
 
       for I in Video.Tile_Textures'Range loop
 	 if Video.Tile_Textures (I) /= null then
-	    SDL_DestroyTexture (Video.Tile_Textures (I));
+	    SDL2_Render.Destroy_Texture (Video.Tile_Textures (I));
 	 end if;
       end loop;
 
       if Video.Renderer /= null then
-	 SDL_DestroyRenderer (Video.Renderer);
+	 SDL2_Render.Destroy_Renderer (Video.Renderer);
       end if;
 
       if Video.Window /= null then
-	 SDL_DestroyWindow (Video.Window);
+	 SDL2_Video.Destroy_Window (Video.Window);
       end if;
    end Deinitialize;
 
    procedure Initialize (Video : in out Video_Driver) is
-      Name : aliased C.char_array := "Ultimada" & C.nul;
    begin
       Ada.Text_IO.Put_Line ("Starting Video Driver");
 
-      Video.Window := SDL_CreateWindow (Name'Address, 200, 200, 512, 512, 0);
-      Video.Renderer := SDL_CreateRenderer (Video.Window, -1, 0);
+      Video.Window := SDL2_Video.Create_Window ("Ultimada", 512, 512);
+      Video.Renderer := SDL2_Render.Create_Renderer (Video.Window);
       Video.Load_Textures;
 
       Ada.Text_IO.New_Line;
@@ -52,97 +51,77 @@ package body Video is
    --  Renderering Subprograms  --
    -------------------------------
    procedure Start (Video : in out Video_Driver) is
-      Error : C.int;
    begin
-      Error := SDL_SetRenderDrawColor (Video.Renderer, 16#00#, 16#00#, 16#00#, 16#FF#);
-      if Error < 0 then
-	 raise Program_Error;
-      end if;
-
-      SDL_RenderClear (Video.Renderer);
+      SDL2_Render.Set_Render_Draw_Color (Video.Renderer, 16#00#, 16#00#, 16#00#, 16#FF#);
+      SDL2_Render.Render_Clear (Video.Renderer);
    end Start;
 
    procedure Finish (Video : in out Video_Driver) is
    begin
-      SDL_RenderPresent (Video.Renderer);
+      SDL2_Render.Render_Present (Video.Renderer);
    end Finish;
 
    procedure Draw_Rectangle
      (Video   : in out Video_Driver;
-      W, H    : in     C.int;
-      X, Y    : in     C.int;
-      R, G, B : in     C.unsigned_char)
+      W, H    : in     Sint32;
+      X, Y    : in     Sint32;
+      R       : in     Red_Color_Channel_Type;
+      G       : in     Green_Color_Channel_Type;
+      B       : in     Blue_Color_Channel_Type)
    is
-      Error :         C.int;
-      Rect  : aliased SDL_Rect;
+      Rect : aliased SDL2_Rect.SDL_Rectangle;
    begin
       Rect.W := W;
       Rect.H := H;
       Rect.X := X;
       Rect.Y := Y;
 
-      Error := SDL_SetRenderDrawColor (Video.Renderer, R, G, B, 16#FF#);
-      if Error < 0 then
-	 raise Program_Error;
-      end if;
-
-      Error := SDL_RenderFillRect (Video.Renderer, Rect'Access);
-      if Error < 0 then
-	 raise Program_Error;
-      end if;
+      SDL2_Render.Set_Render_Draw_Color (Video.Renderer, R, G, B, 16#FF#);
+      SDL2_Render.Render_Fill_Rectangle (Video.Renderer, Rect'Access);
    end Draw_Rectangle;
 
    procedure Draw_Map_Tile
      (Video          : in out Video_Driver;
-      X, Y           : in     C.int;
+      X, Y           : in     Sint32;
       Number         : in     Tile.Tile_ID_Type;
-      Pixel_Offset_X : in     C.int;
-      Pixel_Offset_Y : in     C.int)
+      Pixel_Offset_X : in     Sint32;
+      Pixel_Offset_Y : in     Sint32)
    is
-      Rect  : aliased SDL_Rect;
-      Error :         C.int;
+      Rect : aliased SDL2_Rect.SDL_Rectangle;
    begin
       Rect.X := (X * 16) + Pixel_Offset_X;
       Rect.Y := (Y * 16) + Pixel_Offset_Y;
       Rect.W := 16;
       Rect.H := 16;
 
-      Error := SDL_RenderCopy (Video.Renderer, Video.Tile_Textures (Number), null, Rect'Access);
-      if Error < 0 then
-	 raise Program_Error;
-      end if;
+      SDL2_Render.Render_Copy (Video.Renderer, Video.Tile_Textures (Number), null, Rect'Access);
    end Draw_Map_Tile;
 
    procedure Draw_Object_Tile
      (Video          : in out Video_Driver;
-      X, Y           : in     C.int;
+      X, Y           : in     Sint32;
       Number         : in     Object.Item_Type;
-      Pixel_Offset_X : in     C.int;
-      Pixel_Offset_Y : in     C.int)
+      Pixel_Offset_X : in     Sint32;
+      Pixel_Offset_Y : in     Sint32)
    is
-      Rect  : aliased SDL_Rect;
-      Error :         C.int;
+      Rect : aliased SDL2_Rect.SDL_Rectangle;
    begin
       Rect.X := (X * 16) + Pixel_Offset_X;
       Rect.Y := (Y * 16) + Pixel_Offset_Y;
       Rect.W := 16;
       Rect.H := 16;
 
-      Error := SDL_RenderCopy (Video.Renderer, Video.Object_Textures (Number), null, Rect'Access);
-      if Error < 0 then
-	 raise Program_Error;
-      end if;
+      SDL2_Render.Render_Copy (Video.Renderer, Video.Object_Textures (Number), null, Rect'Access);
    end Draw_Object_Tile;
 
    procedure Draw_Person_Tile
      (Video          : in out Video_Driver;
-      X, Y           : in     C.int;
+      X, Y           : in     Sint32;
       Number         : in     Person.Person_Type;
-      Pixel_Offset_X : in     C.int;
-      Pixel_Offset_Y : in     C.int)
+      Pixel_Offset_X : in     Sint32;
+      Pixel_Offset_Y : in     Sint32)
    is
-      Rect  : aliased SDL_Rect;
-      Error :         C.int;
+      Rect : aliased SDL2_Rect.SDL_Rectangle;
    begin
       if Number = Person.Person_None then
 	 return;
@@ -153,21 +132,15 @@ package body Video is
       Rect.W := 16;
       Rect.H := 16;
 
-      Error := SDL_RenderCopy (Video.Renderer, Video.Person_Textures (Number), null, Rect'Access);
-      if Error < 0 then
-	 raise Program_Error;
-      end if;
+      SDL2_Render.Render_Copy (Video.Renderer, Video.Person_Textures (Number), null, Rect'Access);
    end Draw_Person_Tile;
 
    procedure Change_Scale
      (Video   : in out Video_Driver;
-      S       : in     C.int) is
-      scale_error : C.int;
+      S       : in     Integer)
+   is
    begin
-      scale_error := SDL_RenderSetLogicalSize(Video.Renderer,S,S);
-      if scale_error = -1 then
-         Ada.Text_IO.Put_Line ("Couldn't Scale");
-      end if;
+      SDL2_Render.Render_Set_Logical_Size(Video.Renderer, S, S);
    end Change_Scale;
 
    ---------------------------
@@ -182,7 +155,7 @@ package body Video is
    end Load_Textures;
 
    procedure Load_Objects (Video : in out Video_Driver) is
-      Surface : SDL_Surface;
+      Surface : SDL2_Surface.SDL_Surface;
       Item    : Object.Item_Type;
    begin
       for I in Object_BMP_Array'Range loop
@@ -192,22 +165,22 @@ package body Video is
 	    Name : constant String := SB.To_String (Object_BMP_Array (I).Name);
 	 begin
 	    Ada.Text_IO.Put_Line (Name);
-	    Surface := SDL_LoadBMP (Filepath.Get (Name, "bmps"));
+	    Surface := SDL2_Surface.Load_BMP (Filepath.Get (Name, "bmps"));
 	 end;
-	 SDL_SetColorKey (Surface, 1, 16#FF00CC#);
+	 SDL2_Surface.Set_Color_Key (Surface, True, 16#FF00CC#);
 
 	 Item := Object_BMP_Array (I).Number;
 	 --  Check if the texture is already used.
 	 if Video.Object_Textures (Item) /= null then
 	    raise Program_Error;
 	 end if;
-	 Video.Object_Textures (Item) := SDL_CreateTextureFromSurface (Video.Renderer, Surface);
-	 SDL_FreeSurface (Surface);
+	 Video.Object_Textures (Item) := SDL2_Render.Create_Texture_From_Surface (Video.Renderer, Surface);
+	 SDL2_Surface.Free_Surface (Surface);
       end loop;
    end Load_Objects;
 
    procedure Load_Persons (Video : in out Video_Driver) is
-      Surface : SDL_Surface;
+      Surface : SDL2_Surface.SDL_Surface;
       P       : Person.Person_Type;
    begin
       for I in Person_BMP_Array'Range loop
@@ -217,22 +190,22 @@ package body Video is
 	    Name : constant String := SB.To_String (Person_BMP_Array (I).Name);
 	 begin
 	    Ada.Text_IO.Put_Line (Name);
-	    Surface := SDL_LoadBMP (Filepath.Get (Name, "bmps"));
+	    Surface := SDL2_Surface.Load_BMP (Filepath.Get (Name, "bmps"));
 	 end;
-	 SDL_SetColorKey (Surface, 1, 16#FF00CC#);
+	 SDL2_Surface.Set_Color_Key (Surface, True, 16#FF00CC#);
 
 	 P := Person_BMP_Array (I).Number;
 	 --  Check if the texture is already used.
 	 if Video.Person_Textures (P) /= null then
 	    raise Program_Error;
 	 end if;
-	 Video.Person_Textures (P) := SDL_CreateTextureFromSurface (Video.Renderer, Surface);
-	 SDL_FreeSurface (Surface);
+	 Video.Person_Textures (P) := SDL2_Render.Create_Texture_From_Surface (Video.Renderer, Surface);
+	 SDL2_Surface.Free_Surface (Surface);
       end loop;
    end Load_Persons;
 
    procedure Load_Tiles (Video : in out Video_Driver) is
-      Surface : SDL_Surface;
+      Surface : SDL2_Surface.SDL_Surface;
       T       : Tile.Tile_ID_Type;
    begin
       for I in Tile_BMP_Array'Range loop
@@ -243,17 +216,17 @@ package body Video is
 	 begin
 	    Ada.Text_IO.Put_Line (Name);
 	   --   Surface := SDL_LoadBMP (Filepath.Get_BMP (Name));
-	    Surface := SDL_LoadBMP (Filepath.Get (Name, "bmps"));
+	    Surface := SDL2_Surface.Load_BMP (Filepath.Get (Name, "bmps"));
 	 end;
-	 SDL_SetColorKey (Surface, 1, 16#FF00CC#);
+	 SDL2_Surface.Set_Color_Key (Surface, True, 16#FF00CC#);
 
 	 T := Tile_BMP_Array (I).Number;
 	 --  Check if the texture is aleady used.
 	 if Video.Tile_Textures (I) /= null then
 	    raise Program_Error;
 	 end if;
-	 Video.Tile_Textures (T) := SDL_CreateTextureFromSurface (Video.Renderer, Surface);
-	 SDL_FreeSurface (Surface);
+	 Video.Tile_Textures (T) := SDL2_Render.Create_Texture_From_Surface (Video.Renderer, Surface);
+	 SDL2_Surface.Free_Surface (Surface);
       end loop;
    end Load_Tiles;
 end Video;

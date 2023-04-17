@@ -1,11 +1,8 @@
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
-with Interfaces.C;
 with Map;
 with Person;
 
 package Player is
-   package C renames Interfaces.C;
-
    type Player_Type is tagged private;
 
    subtype Location_X is Map.Map_Width_Type;

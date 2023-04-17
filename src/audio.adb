@@ -1,10 +1,7 @@
 with Ada.Text_IO;
 with Filepath;
-with Interfaces.C; use Interfaces.C;
 
 package body Audio is
-   package C renames Interfaces.C;
-
    ----------------------------------
    --  Initialization Subprograms  --
    ----------------------------------
@@ -12,27 +9,19 @@ package body Audio is
    begin
       for I in Audio.Waves'Range loop
 	 if Audio.Waves (I) /= null then
-	    Mix_FreeChunk (Audio.Waves (I));
+	    SDL2_Mixer.Free_Chunk (Audio.Waves (I));
 	 end if;
       end loop;
 
-      Mix_Quit;
+      SDL2_Mixer.Deinitialize;
    end Deinitialize;
 
    procedure Initialize (Audio : in out Audio_Driver) is
-      Error : C.int;
    begin
       Ada.Text_IO.Put_Line ("Staring Audio Driver");
 
-      Error := Mix_Init (16#0000_0008#);
-      if Error = 0 then
-     	 raise Program_Error;
-      end if;
-
-      Error := Mix_OpenAudio (44100, 16#8010#, 8, 1024);
-      if Error < 0 then
-	 raise Program_Error;
-      end if;
+      SDL2_Mixer.Initialize (16#0000_0008#);
+      SDL2_Mixer.Open_Audio (44100, 16#8010#, 8, 1024);
 
       Load_Audio_Files (Audio);
 
@@ -46,28 +35,20 @@ package body Audio is
      (Audio : in out Audio_Driver;
       Sound : in     Sound_ID_Type)
    is
-      Error : C.int;
    begin
-      if Mix_Playing (1) > 0 then
+      if SDL2_Mixer.Playing (1) then
 	 return;
       end if;
 
-      Error := Mix_PlayChannel (1, Audio.Waves (Sound), 0);
-      if Error < 0 then
-	 raise Program_Error;
-      end if;
+      SDL2_Mixer.Play_Channel (1, Audio.Waves (Sound), 0);
    end Play_Background_Sound;
 
    procedure Play_Sound
      (Audio : in out Audio_Driver;
       Sound : in     Sound_ID_Type)
    is
-      Error : C.Int;
    begin
-      Error := Mix_PlayChannel (0, Audio.Waves (Sound), 0);
-      if Error < 0 then
-	 raise Program_Error;
-      end if;
+      SDL2_Mixer.Play_Channel (0, Audio.Waves (Sound), 0);
    end Play_Sound;
 
    ---------------------------
@@ -81,7 +62,7 @@ package body Audio is
 	 Ada.Text_IO.Put      ("Loading: ");
 	 Ada.Text_IO.Put_Line (SB.To_String (Sound_Array (I).Name));
 
-	 Chunk := Mix_LoadWAV (Filepath.Get (SB.To_String (Sound_Array (I).Name), "wavs"));
+	 Chunk := SDL2_Mixer.Load_WAV (Filepath.Get (SB.To_String (Sound_Array (I).Name), "wavs"));
 	 if Chunk = null then
 	    raise Program_Error;
 	 end if;

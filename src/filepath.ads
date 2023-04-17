@@ -1,12 +1,9 @@
-with Interfaces.C.Strings; use Interfaces.C.Strings;
+with Ada.Strings.Bounded;
 
 package Filepath is
-   package C renames Interfaces.C;
-
    ----------------------------------
    --  Initialization Subprograms  --
    ----------------------------------
-   procedure Deinitialize;
    procedure Initialize;
 
    ---------------------------------
@@ -18,6 +15,6 @@ package Filepath is
      return String;
 
 private
-   App_Filepath  : C.Strings.chars_ptr := C.Strings.Null_Ptr;
-   Platform_Name : C.Strings.chars_ptr := C.Strings.Null_Ptr;
+   package SB is new Ada.Strings.Bounded.Generic_Bounded_Length (10_000);
+   App_Filepath : SB.Bounded_String;
 end Filepath;

@@ -1,19 +1,12 @@
 with Ada.Text_IO;
 with Application;
 with Filepath;
-with Interfaces.C; use Interfaces.C;
-with SDL2;         use SDL2;
+with SDL2;        use SDL2;
 with Version;
 
 procedure Ultimada is
-   package C renames Interfaces.C;
-
-   Error : C.int;
 begin
-   Error := SDL_Init (16#0000_0020# or 16#0000_4000# or 16#0000_0010#);
-   if Error < 0 then
-      raise Program_Error;
-   end if;
+   SDL2.Initialize (SDL_Init_Audio or SDL_Init_Video or SDL_Init_Events);
 
    Filepath.Initialize;
 
@@ -26,7 +19,5 @@ begin
    Application.Game_Loop;
    Application.Deinitialize;
 
-   Filepath.Deinitialize;
-
-   SDL_Quit;
+   SDL2.Deinitialize;
 end Ultimada;

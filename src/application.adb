@@ -1,4 +1,4 @@
-with SDL2; use SDL2;
+with SDL2_Events; use SDL2_Events;
 
 package body Application is
    ----------------------------------
@@ -32,10 +32,10 @@ package body Application is
    end Get_Video;
 
    procedure Game_Loop is
-      Event : aliased SDL_Event;
+      Event : aliased SDL2_Events.SDL_Event;
    begin
       loop
-	 SDL_WaitEvent (Event'Access);
+	 SDL2_Events.Wait_Event (Event'Access);
 	 case Event.Event_Type is
 	    when 16#100# => goto Exit_Loop;
 	    when others  => null;

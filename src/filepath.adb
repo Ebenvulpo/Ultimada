@@ -1,4 +1,5 @@
-with SDL2; use SDL2;
+with SDL2_Filesystem;
+with SDL2_Platform;
 
 package body Filepath is
    ----------------
@@ -11,36 +12,10 @@ package body Filepath is
    ----------------------------------
    --  Initialization Subprograms  --
    ----------------------------------
-   procedure Deinitialize is
-   begin
-      if
-	App_Filepath  = C.Strings.Null_Ptr or
-	Platform_Name = C.Strings.Null_Ptr
-      then
-	 raise Program_Error;
-      end if;
-
-      Free (Platform_Name);
-      Free (App_Filepath);
-   end Deinitialize;
-
    procedure Initialize is
+      AP : constant String := SDL2_Filesystem.Get_Base_Path;
    begin
-      if
-	App_Filepath  /= C.Strings.Null_Ptr or
-	Platform_Name /= C.Strings.Null_Ptr
-      then
-	 raise Program_Error;
-      end if;
-
-      Platform_Name := SDL_GetPlatform;
-      App_Filepath  := SDL_GetBasePath;
-      if
-	Platform_Name = C.Strings.Null_ptr or
-	App_Filepath  = C.Strings.Null_Ptr
-      then
-	 raise Program_Error;
-      end if;
+      App_Filepath := SB.To_Bounded_String (AP);
    end Initialize;
 
    ---------------------------------
@@ -53,9 +28,9 @@ package body Filepath is
    is
       Slash : String := "/";
    begin
-      if Value (Platform_Name) = Windows then
+      if SDL2_Platform.Get_Platform = Windows then
          Slash := "\";
       end if;
-      return Value (App_Filepath) & Assets & Slash & T & Slash & Name;
+      return SB.To_String (App_Filepath) & Assets & Slash & T & Slash & Name;
    end Get;
 end Filepath;

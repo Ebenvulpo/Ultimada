@@ -19,10 +19,10 @@ package body Map is
 
    procedure Initialize
      (Map          : in out Map_Type;
-      low_tile     : in     Integer;
-      high_tile    : in     Integer;
-      default_tile : in     Integer;
-      spawn_rate   : in     Float)
+      Low_Tile     : in     Integer;
+      High_Tile    : in     Integer;
+      Default_Tile : in     Integer;
+      Spawn_Rate   : in     Float)
    is
    begin
       Map.Tiles := new Tile_Map;
@@ -176,10 +176,10 @@ package body Map is
    procedure Render
      (Map            : in out Map_Type;
       Video          : in out Video_Driver;
-      Offset_X       : in     C.int;
-      Offset_Y       : in     C.int;
-      Pixel_Offset_X : in     C.int;
-      Pixel_Offset_Y : in     C.int)
+      Offset_X       : in     Sint32;
+      Offset_Y       : in     Sint32;
+      Pixel_Offset_X : in     Sint32;
+      Pixel_Offset_Y : in     sint32)
    is
    begin
       for Y in Map_Height_Type'Range loop

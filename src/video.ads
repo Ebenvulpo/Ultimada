@@ -1,8 +1,9 @@
 with Ada.Strings.Bounded;
-with Interfaces.C;        use Interfaces.C;
 with Object;
 with Person;
-with SDL2;                use SDL2;
+with SDL2_Render;         use SDL2_Render;
+with SDL2_Stdinc;         use SDL2_Stdinc;
+with SDL2_Video;          use SDL2_Video;
 with Tile;
 
 package Video is
@@ -22,34 +23,36 @@ package Video is
 
    procedure Draw_Rectangle
      (Video   : in out Video_Driver;
-      W, H    : in     C.int;
-      X, Y    : in     C.int;
-      R, G, B : in     C.unsigned_char);
+      W, H    : in     Sint32;
+      X, Y    : in     Sint32;
+      R       : in     Red_Color_Channel_Type;
+      G       : in     Green_Color_Channel_Type;
+      B       : in     Blue_Color_Channel_Type);
 
    procedure Draw_Map_Tile
      (Video          : in out Video_Driver;
-      X, Y           : in     C.int;
+      X, Y           : in     Sint32;
       Number         : in     Tile.Tile_ID_Type;
-      Pixel_Offset_X : in     C.int;
-      Pixel_Offset_Y : in     C.int);
+      Pixel_Offset_X : in     Sint32;
+      Pixel_Offset_Y : in     Sint32);
 
    procedure Draw_Object_Tile
      (Video          : in out Video_Driver;
-      X, Y           : in     C.int;
+      X, Y           : in     Sint32;
       Number         : in     Object.Item_Type;
-      Pixel_Offset_X : in     C.int;
-      Pixel_Offset_Y : in     C.int);
+      Pixel_Offset_X : in     Sint32;
+      Pixel_Offset_Y : in     Sint32);
 
    procedure Draw_Person_Tile
      (Video          : in out Video_Driver;
-      X, Y           : in     C.int;
+      X, Y           : in     Sint32;
       Number         : in     Person.Person_Type;
-      Pixel_Offset_X : in     C.int;
-      Pixel_Offset_Y : in     C.int);
+      Pixel_Offset_X : in     Sint32;
+      Pixel_Offset_Y : in     Sint32);
 
    procedure Change_Scale
      (Video   : in out Video_Driver;
-      S       : in     C.int);
+      S       : in     Integer);
 
 private
    type Object_Texture_Array is array (Object.Item_Type   range <>) of SDL_Texture;

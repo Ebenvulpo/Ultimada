@@ -1,51 +1,23 @@
+with Interfaces.C; use Interfaces.C;
+
 package body SDL2 is
-   function SDL_RWFromFile (File : in System.Address; Mode : in C.char_array) return System.Address
-     with Import => True, Convention => C, External_Name => "SDL_RWFromFile";
+   package C renames Interfaces.C;
 
-   function SDL_LoadBMP (File : in String) return SDL_Surface is
-      function SDL_LoadBMP_RW (File : in System.Address; FreeSrc : in C.int) return SDL_Surface
-	with Import => True, Convention => C, External_Name => "SDL_LoadBMP_RW";
+   ----------------------------
+   --  External C Functions  --
+   ----------------------------
+   function C_SDL_Init (Flags : in Initialization_Flag) return C.int with
+     Import => True, Convention => C, External_Name => "SDL_Init";
 
-      File_Address :         System.Address;
-      Surface      :         SDL_Surface;
-      FilePath     : aliased C.char_array := C.To_C (File);
+   --------------------------
+   --  Public Subprograms  --
+   --------------------------
+   procedure Initialize (Flags : in Initialization_Flag) is
+      Error : C.int;
    begin
-      File_Address := SDL_RWFromFile (FilePath'Address, "rb");
-      if File_Address = System.Null_Address then
-	 raise Program_Error;
+      Error := C_SDL_Init (Flags);
+      if Error < 0 then
+	 raise Initialization_Error;
       end if;
-
-      Surface := SDL_LoadBMP_RW (File_Address, 1);
-      if Surface = null then
-	 raise Program_Error;
-      end if;
-
-      return Surface;
-   end SDL_LoadBMP;
-   
-   function Mix_PlayChannel
-     (Channel : in C.int;
-      Chunk   : in Mix_Chunk;
-      Loops   : in C.int)
-     return C.int
-   is
-      function Mix_PlayChannelTimed
-	(Channel : in C.int;
-	 Chunk   : in Mix_Chunk;
-	 Loops   : in C.int;
-	 Ticks   : in C.int)
-	return C.int with
-	Import => True, Convention => C, External_Name => "Mix_PlayChannelTimed";
-   begin
-      return Mix_PlayChannelTimed (Channel, Chunk, Loops, -1);
-   end Mix_PlayChannel;
-
-   function Mix_LoadWAV (File : in String) return Mix_Chunk is
-      function Mix_LoadWAV_RW (File : in System.Address; FreeSrc : in C.int) return Mix_Chunk with
-	Import => True, Convention => C, External_Name => "Mix_LoadWAV_RW";
-
-      FilePath : aliased C.char_array := C.To_C (File);
-   begin
-      return Mix_LoadWAV_RW (SDL_RWFromFile (Filepath'Address, "rb"), 1);
-   end Mix_LoadWAV;
+   end Initialize;
 end SDL2;

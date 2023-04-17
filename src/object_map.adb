@@ -57,10 +57,10 @@ package body Object_Map is
    procedure Render
      (Object_Map     : in out Object_Map_Type;
       Video          : in out Video_Driver;
-      Offset_X       : in     C.int;
-      Offset_Y       : in     C.int;
-      Pixel_Offset_X : in     C.int;
-      Pixel_Offset_Y : in     C.int)
+      Offset_X       : in     Sint32;
+      Offset_Y       : in     Sint32;
+      Pixel_Offset_X : in     Sint32;
+      Pixel_Offset_Y : in     Sint32)
    is
    begin
       for Y in Object_Map_Height'Range loop

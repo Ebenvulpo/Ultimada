@@ -1,5 +1,5 @@
 with Ada.Strings.Bounded;
-with SDL2;                use SDL2;
+with SDL2_Mixer;          use SDL2_Mixer;
 
 package Audio is
    type Audio_Driver is tagged private;

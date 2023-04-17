@@ -1,199 +1,30 @@
-with Interfaces.C;         use Interfaces.C;
-with Interfaces.C.Strings;
-with System;               use System;
+with SDL2_Stdinc; use SDL2_Stdinc;
 
 package SDL2 is
-   package C renames Interfaces.C;
+   type Initialization_Flag is new Uint32;
 
-   type Dummy_Mix_Chunk    is limited private;
-   type Dummy_Mix_Music    is limited private;
-   type Dummy_SDL_Window   is limited private;
-   type Dummy_SDL_Renderer is limited private;
-   type Dummy_SDL_Surface  is limited private;
-   type Dummy_SDL_Texture  is limited private;
+   -----------------
+   --  Constants  --
+   -----------------
+   SDL_Init_Timer           : constant Initialization_Flag := 16#0000_0001#;
+   SDL_Init_Audio           : constant Initialization_Flag := 16#0000_0010#;
+   SDL_Init_Video           : constant Initialization_Flag := 16#0000_0020#;
+   SDL_Init_Joystick        : constant Initialization_Flag := 16#0000_0200#;
+   SDL_Init_Haptic          : constant Initialization_Flag := 16#0000_1000#;
+   SDL_Init_Game_Controller : constant Initialization_Flag := 16#0000_2000#;
+   SDL_Init_Events          : constant Initialization_Flag := 16#0000_4000#;
+   SDL_Init_Sensor          : constant Initialization_Flag := 16#0000_8000#;
 
-   type Mix_Chunk    is access Dummy_Mix_Chunk;
-   type Mix_Music    is access Dummy_Mix_Music;
-   type SDL_Window   is access Dummy_SDL_Window;
-   type SDL_Renderer is access Dummy_SDL_Renderer;
-   type SDL_Surface  is access Dummy_SDL_Surface;
-   type SDL_Texture  is access Dummy_SDL_Texture;
-
-   pragma Convention (C, Mix_Chunk);
-   pragma Convention (C, Mix_Music);
-   pragma Convention (C, SDL_Window);
-   pragma Convention (C, SDL_Renderer);
-   pragma Convention (C, SDL_Surface);
-   pragma Convention (C, SDL_Texture);
-
-   type SDL_Keysym is
-      record
-	 Scancode     : aliased C.int;
-	 Sym          : aliased C.int;
-	 Modification : aliased C.unsigned_short;
-	 Unused       : aliased C.unsigned;
-      end record;
-   pragma Convention (C, SDL_Keysym);
-
-   type SDL_KeyboardEvent is
-      record
-	 Event_Type : aliased C.unsigned;
-	 Timestamp  : aliased C.unsigned;
-	 WindowID   : aliased C.unsigned;
-	 State      : aliased C.unsigned_char;
-	 Repeat     : aliased C.unsigned_char;
-	 Padding2   : aliased C.unsigned_char;
-	 Padding3   : aliased C.unsigned_char;
-	 Keysym     : aliased SDL_Keysym;
-      end record;
-   pragma Convention (C, SDL_KeyboardEvent);
-
-   type Event_Padding_Array is array (C.size_t range <>) of aliased C.unsigned_char;
-   pragma Convention (C, Event_Padding_Array);
-
-   type SDL_Event (T : C.unsigned := 0) is
-      record
-	 case T is
-	    when 16#0# =>
-	       Event_Type : aliased C.unsigned;
-	    when 16#300# =>
-	       Key        : aliased SDL_KeyboardEvent;
-	    when others =>
-	       Padding    : aliased Event_Padding_Array (1 .. 56);
-	 end case;
-      end record;
-   pragma Unchecked_Union (SDL_Event);
-
-   type SDL_Rect is
-      record
-	 X, Y : aliased C.int;
-	 W, H : aliased C.int;
-      end record;
-   pragma Convention (C, SDL_Rect);
-
-   function SDL_GetBasePath return C.Strings.chars_ptr with
-     Import => True, Convention => C, External_Name => "SDL_GetBasePath";
-
-   procedure SDL_WaitEvent (Event : access SDL_Event) with
-     Import => True, Convention => C, External_Name => "SDL_WaitEvent";
-
-   function SDL_Init (Flags : in C.unsigned) return C.int with
-     Import => True, Convention => C, External_Name => "SDL_Init";
-
-   procedure SDL_Quit with
+   --------------------------
+   --  Public Subprograms  --
+   --------------------------
+   procedure Deinitialize with
      Import => True, Convention => C, External_Name => "SDL_Quit";
 
-   function SDL_CreateWindow
-     (Title : in System.Address; X, Y, W, H : C.int; Flags : in C.unsigned)
-     return SDL_Window with
-     Import => True, Convention => C, External_Name => "SDL_CreateWindow";
+   procedure Initialize (Flags : in Initialization_Flag);
 
-   procedure SDL_DestroyWindow (Window : in SDL_Window) with
-     Import => True, Convention => C, External_Name => "SDL_DestroyWindow";
-
-   function SDL_CreateRenderer
-     (Window : in SDL_Window; Index : C.int; Flags : in C.unsigned)
-     return SDL_Renderer with
-     Import => True, Convention => C, External_Name => "SDL_CreateRenderer";
-
-   procedure SDL_DestroyRenderer (Renderer : in SDL_Renderer) with
-     Import => True, Convention => C, External_Name => "SDL_DestroyRenderer";
-
-   procedure SDL_RenderGetLogicalSize
-     (Renderer : in SDL_Renderer; W, H : access C.int)
-     with
-     Import => True, Convention => C, External_Name => "SDL_RenderGetLogicalSize";
-
-   function SDL_RenderSetLogicalSize
-     (Renderer : in SDL_Renderer; W, H : C.int)
-     return C.int with
-     Import => True, Convention => C, External_Name => "SDL_RenderSetLogicalSize";
-
-   function SDL_SetRenderDrawColor
-     (Renderer : in SDL_Renderer; R, G, B, A : in C.unsigned_char)
-     return C.int with
-     Import => True, Convention => C, External_Name => "SDL_SetRenderDrawColor";
-
-   function SDL_RenderCopy
-     (Renderer : in     SDL_Renderer;
-      Texture  : in     SDL_Texture;
-      SrcRect  : access SDL_Rect;
-      DstRect  : access SDL_Rect)
-     return C.int with
-     Import => True, Convention => C, External_Name => "SDL_RenderCopy";
-
-   procedure SDL_RenderClear (Renderer : in SDL_Renderer) with
-     Import => True, Convention => C, External_Name => "SDL_RenderClear";
-
-   function SDL_RenderFillRect
-     (Renderer : in SDL_Renderer; Rect : access SDL_Rect)
-     return C.int with
-     Import => True, Convention => C, External_Name => "SDL_RenderFillRect";
-
-   procedure SDL_RenderPresent (Renderer : in SDL_Renderer) with
-     Import => True, Convention => C, External_Name => "SDL_RenderPresent";
-
-   function SDL_CreateTextureFromSurface
-     (Renderer : in SDL_Renderer; Surface : in SDL_Surface)
-     return SDL_Texture with
-     Import => True, Convention => C, External_Name => "SDL_CreateTextureFromSurface";
-
-   procedure SDL_SetColorKey
-     (Surface : in SDL_Surface;
-      Flag    : in C.int;
-      Key     : in C.unsigned) with
-     Import => True, Convention => C, External_Name => "SDL_SetColorKey";
-
-   procedure SDL_DestroyTexture (Texture : in SDL_Texture) with
-     Import => True, Convention => C, External_Name => "SDL_DestroyTexture";
-
-   procedure SDL_FreeSurface (Surface : in SDL_Surface) with
-     Import => True, Convention => C, External_Name => "SDL_FreeSurface";
-
-   function SDL_LoadBMP (File : in String) return SDL_Surface;
-
-   function SDL_GetPlatform return C.Strings.chars_ptr with
-     Import => True, Convention => C, External_Name => "SDL_GetPlatform";
-
-   function Mix_Init (Flags : in C.int) return C.int with
-     Import => True, Convention => C, External_Name => "Mix_Init";
-
-   procedure Mix_Quit with
-     Import => True, Convention => C, External_Name => "Mix_Quit";
-
-   function Mix_OpenAudio
-     (Frequencey : in C.int;
-      Format     : in C.unsigned_short;
-      Channel    : in C.int;
-      Chunksize  : in C.int)
-     return C.int with
-     Import => True, Convention => C, External_Name => "Mix_OpenAudio";
-
-   function Mix_LoadWAV (File : in String) return Mix_Chunk;
-
-   function Mix_PlayChannel
-     (Channel : in C.int;
-      Chunk   : in Mix_Chunk;
-      Loops   : in C.int)
-     return C.int;
-
-   function Mix_Playing (Channel : in C.int) return C.int with
-     Import => True, Convention => C, External_Name => "Mix_Playing";
-
-   procedure Mix_FreeChunk (Chunk : in Mix_Chunk) with
-     Import => True, Convention => C, External_Name => "Mix_FreeChunk";
-
-   function Mix_LoadMUS (File : in C.Strings.chars_ptr) return Mix_Music with
-     Import => True, Convention => C, External_Name => "Mix_LoadMUS";
-
-   procedure Mix_FreeMusic (Music : in Mix_Music) with
-     Import => True, Convention => C, External_Name => "Mix_FreeMusic";
-
-private
-   type Dummy_Mix_Chunk    is null record;
-   type Dummy_Mix_Music    is null record;
-   type Dummy_SDL_Window   is null record;
-   type Dummy_SDL_Renderer is null record;
-   type Dummy_SDL_Surface  is null record;
-   type Dummy_SDL_Texture  is null record;
+   ------------------
+   --  Exceptions  --
+   ------------------
+   Initialization_Error : exception;
 end SDL2;

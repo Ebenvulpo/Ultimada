@@ -1,13 +1,11 @@
-with Map;          use Map;
-with Object_Map;   use Object_Map;
-with SDL2;         use SDL2;
-with Player;       use Player;
-with Video;        use Video;
-with Interfaces.C; use Interfaces.C;
+with Map;         use Map;
+with Object_Map;  use Object_Map;
+with SDL2_Events; use SDL2_Events;
+with SDL2_Stdinc; use SDL2_Stdinc;
+with Player;      use Player;
+with Video;       use Video;
 
 package Game is
-   package C renames Interfaces.C;
-
    type Game_Type is tagged limited private;
 
    ----------------------------------
@@ -23,7 +21,7 @@ package Game is
 
    procedure Input (Game : in out Game_Type; Event : in SDL_Event);
 
-   procedure Change_Scale (Game : out Game_Type; dS : in  Interfaces.C.int);
+   procedure Change_Scale (Game : out Game_Type; dS : in Integer);
 
 private
    type Player_Array is array (Natural range <>) of Player_Type;
@@ -34,7 +32,7 @@ private
          Objs         : Object_Map_Type;
          Human_Player : Player_Type;
          Players      : Player_Array (0 .. 20);
-         Logical_Size : Interfaces.C.int := 256;
+         Logical_Size : Integer := 256;
       end record;
 
    procedure AI_Do_Move (G : in out Game_Type);
@@ -50,6 +48,6 @@ private
    procedure Move
      (Game   : in out Game_Type;
       Player : in out Player_Type;
-      X      : in     C.int;
-      Y      : in     C.int);
+      X      : in     Sint32;
+      Y      : in     Sint32);
 end Game;
